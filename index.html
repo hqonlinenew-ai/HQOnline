@@ -106,6 +106,9 @@ main{margin-left:312px;padding:40px 40px 64px;max-width:1280px}
 .lmsg:empty{display:none}
 .lpg{position:absolute;left:50%;transform:translateX(-50%);bottom:calc(16px + env(safe-area-inset-bottom,0px));margin:0;padding:6px 14px;border-radius:999px;background:var(--ink);color:var(--on-ink);font-size:.8125rem;pointer-events:none}
 .lpg:empty{display:none}
+.cover>iframe{position:absolute;inset:0;width:100%;height:100%;border:0;pointer-events:none;z-index:1;background:#fff}
+.lframe{flex:1;width:100%;border:0;background:var(--panel);display:block}
+.lframe[hidden]{display:none}
 .cover>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1}
 .empty{grid-column:1/-1;padding:48px 0;color:var(--muted)}
 .empty button{margin-top:12px;padding:10px 16px;border:0;border-radius:12px;background:var(--ink);color:var(--on-ink);cursor:pointer;font-weight:500}
@@ -146,14 +149,11 @@ main{margin-left:312px;padding:40px 40px 64px;max-width:1280px}
     <button type="button" id="lback">Voltar ao catálogo</button>
     <div class="ltit"><b id="ltit"></b><span id="lsub"></span></div>
     <div class="ltools">
-      <button type="button" id="zmenos" aria-label="Diminuir zoom">−</button>
-      <span id="zval" aria-live="polite">100%</span>
-      <button type="button" id="zmais" aria-label="Aumentar zoom">+</button>
       <a id="lopen" target="_blank" rel="noopener" hidden>Abrir PDF</a>
     </div>
   </header>
-  <div class="lbody" id="lbody"><p class="lmsg" id="lmsg"></p><div class="lpag" id="lpag"></div></div>
-  <p class="lpg" id="lpg" aria-live="polite"></p>
+  <p class="lmsg" id="lmsg"></p>
+  <iframe class="lframe" id="lframe" title="Leitura do PDF" hidden allow="fullscreen"></iframe>
 </section>
 
 <button class="scrim" id="scrim" type="button" aria-label="Fechar filtros"></button>
@@ -246,7 +246,9 @@ function descricao(){
 var LOTE = 8, atual = [], vis = 0, obs = null;
 function fmt(p){return p?p.slice(8,10)+"/"+p.slice(5,7)+"/"+p.slice(0,4):"";}
 function cartao(f,i){
-  var img = f.capa ? '<img src="'+esc(f.capa)+'" alt="" loading="lazy" onerror="this.remove()">' : "";
+  var img = !f.capa ? "" : ehImagem(f.capa)
+    ? '<img src="'+esc(f.capa)+'" alt="" loading="lazy" onerror="this.remove()">'
+    : '<iframe src="'+esc(capaEmbed(f.capa))+'" title="" tabindex="-1" aria-hidden="true" loading="lazy" scrolling="no"></iframe>';
   var nome = f.s ? f.t+": "+f.s : f.t;
   var linhas = [];
   if(f.r) linhas.push(esc(f.r));
@@ -324,96 +326,38 @@ $("logoin").addEventListener("change", function(e){
 });
 
 
-// Leitor de PDF
+// Leitor de PDF (iframe)
 function slug(f){return norm(f.t+" "+f.s+" "+f.a).replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");}
 function atribuiIds(){var vistos={};ITENS.forEach(function(f){var b=slug(f)||"item",n=vistos[b]=(vistos[b]||0)+1;f.id=n>1?b+"-"+n:b;});}
-var cur=null, pdfDoc=null, zoom=1, token=0, savedY=0, pdfSrc="", libP=null, capsP=null, pobs=null, ratio=1.45;
-function carregaLib(){
-  if(libP) return libP;
-  var base="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/";
-  function js(src){return new Promise(function(ok,no){var t=document.createElement("script");t.src=src;t.onload=ok;t.onerror=no;document.head.appendChild(t);});}
-  libP=js(base+"pdf.min.js").then(function(){return js(base+"pdf.worker.min.js");}).then(function(){
-    window.pdfjsLib.GlobalWorkerOptions.workerSrc=base+"pdf.worker.min.js"; return window.pdfjsLib;
-  });
-  libP.catch(function(){libP=null;});
-  return libP;
-}
+var cur=null, savedY=0;
 function msg(t){$("lmsg").textContent=t||"";}
-function fonte(f){return Promise.resolve(f.pdf||null);}
-function limpaPdf(){
-  token++; if(pobs){pobs.disconnect();pobs=null;}
-  if(pdfDoc){try{pdfDoc.destroy();}catch(e){} pdfDoc=null;}
-  $("lpag").innerHTML=""; $("lpg").textContent=""; msg("");
+function embed(u){
+  var m=u.match(/drive\.google\.com\/file\/d\/([^\/?#]+)/)||u.match(/drive\.google\.com\/open\?id=([^&#]+)/);
+  return m?"https://drive.google.com/file/d/"+m[1]+"/preview":u;
+}
+function ehImagem(u){return /\.(png|jpe?g|webp|gif|avif|svg)($|[?#])/i.test(u);}
+function capaEmbed(u){u=embed(u);return (/\.pdf($|[?#])/i.test(u)&&u.indexOf("#")<0)?u+"#page=1&view=FitH&toolbar=0&navpanes=0&scrollbar=0":u;}
+function dentro(v){document.querySelectorAll("main,.menu,.brandbar,.fab").forEach(function(e){e.inert=v;});}
+function carregaPdf(f){
+  var fr=$("lframe"); $("lopen").hidden=true;
+  if(!f.pdf){ fr.hidden=true; fr.src="about:blank"; msg("Este título ainda não tem PDF."); return; }
+  var u=embed(f.pdf); msg("");
+  $("lopen").href=f.pdf; $("lopen").hidden=false;
+  fr.src=(/\.pdf($|[?#])/i.test(u)&&u.indexOf("#")<0)?u+"#view=FitH":u;
+  fr.hidden=false;
 }
 function abreLeitor(f){
   if($("leitor").hidden) savedY=window.scrollY;
-  cur=f; zoom=1; $("zval").textContent="100%";
-  $("leitor").hidden=false; document.body.style.overflow="hidden";
-  document.querySelectorAll("main,.menu,.brandbar,.fab").forEach(function(e){e.inert=true;});
-  $("ltit").textContent=f.t+": "+f.s; $("lsub").textContent=f.r+" · "+f.e+" · "+f.a;
+  cur=f; $("leitor").hidden=false; document.body.style.overflow="hidden"; dentro(true);
+  $("ltit").textContent=(f.s?f.t+": "+f.s:f.t); $("lsub").textContent=[f.r,f.e,f.a||""].filter(Boolean).join(" · ");
   $("lback").focus(); carregaPdf(f);
 }
 function fechaLeitor(){
   if($("leitor").hidden) return;
-  $("leitor").hidden=true; document.body.style.overflow=""; limpaPdf(); cur=null;
-  document.querySelectorAll("main,.menu,.brandbar,.fab").forEach(function(e){e.inert=false;});
+  $("leitor").hidden=true; document.body.style.overflow=""; dentro(false); cur=null;
+  $("lframe").src="about:blank"; $("lframe").hidden=true; msg("");
   window.scrollTo(0,savedY);
 }
-function carregaPdf(f){
-  limpaPdf(); var my=token; pdfSrc=""; $("lopen").hidden=true;
-  fonte(f).then(function(src){
-    if(my!==token) return;
-    if(!src){ msg("Este título ainda não tem PDF."); return; }
-    pdfSrc=src; $("lopen").href=src; $("lopen").hidden=false; msg("Carregando o PDF…");
-    return carregaLib().then(function(lib){return lib.getDocument({url:src}).promise;}).then(function(doc){
-      if(my!==token){doc.destroy();return;}
-      pdfDoc=doc; msg(""); montaPaginas(my,1);
-    });
-  }).catch(function(){ if(my===token) msg("Não foi possível exibir o PDF aqui. Use “Abrir PDF” para vê-lo em outra aba."); });
-}
-function larguraPagina(){return Math.max(200,Math.min($("lbody").clientWidth-32,960))*zoom;}
-function montaPaginas(my,irPara){
-  var host=$("lpag"); if(pobs){pobs.disconnect();}
-  pdfDoc.getPage(1).then(function(p1){
-    if(my!==token) return;
-    var v=p1.getViewport({scale:1}); ratio=v.height/v.width;
-    var w=larguraPagina(); host.innerHTML="";
-    for(var i=1;i<=pdfDoc.numPages;i++){
-      var d=document.createElement("div"); d.className="pg"; d.dataset.n=i;
-      d.style.setProperty("--pw",w+"px"); d.style.height=(w*ratio)+"px"; host.appendChild(d);
-    }
-    pobs=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting) renderPagina(e.target,my);});},{root:$("lbody"),rootMargin:"900px 0px"});
-    host.querySelectorAll(".pg").forEach(function(d){pobs.observe(d);});
-    var alvo=host.children[irPara-1]; if(alvo) $("lbody").scrollTop=alvo.offsetTop-8;
-    marcaPagina();
-  });
-}
-function renderPagina(d,my){
-  if(d.dataset.ok) return; d.dataset.ok="1";
-  pdfDoc.getPage(+d.dataset.n).then(function(pg){
-    if(my!==token) return;
-    var w=larguraPagina(), v1=pg.getViewport({scale:1}), dpr=Math.min(window.devicePixelRatio||1,2);
-    var vp=pg.getViewport({scale:w/v1.width*dpr}), c=document.createElement("canvas");
-    c.width=vp.width; c.height=vp.height; c.style.width=w+"px"; c.style.height=(vp.height/dpr)+"px";
-    d.style.height="auto"; d.appendChild(c);
-    pg.render({canvasContext:c.getContext("2d"),viewport:vp});
-  }).catch(function(){d.dataset.ok="";});
-}
-function paginaAtual(){
-  var b=$("lbody"), ds=$("lpag").children, ref=b.scrollTop+b.clientHeight/3, n=1;
-  for(var i=0;i<ds.length;i++){ if(ds[i].offsetTop<=ref) n=i+1; else break; }
-  return n;
-}
-function marcaPagina(){ if(pdfDoc) $("lpg").textContent="Página "+paginaAtual()+" de "+pdfDoc.numPages; }
-var tick=false;
-$("lbody").addEventListener("scroll",function(){ if(tick) return; tick=true; requestAnimationFrame(function(){tick=false;marcaPagina();}); });
-function mudaZoom(d){
-  if(!pdfDoc) return;
-  zoom=Math.min(2.5,Math.max(0.5,Math.round((zoom+d)*4)/4)); $("zval").textContent=Math.round(zoom*100)+"%";
-  var n=paginaAtual(); montaPaginas(token,n);
-}
-$("zmenos").addEventListener("click",function(){mudaZoom(-0.25);});
-$("zmais").addEventListener("click",function(){mudaZoom(0.25);});
 $("lback").addEventListener("click",function(){location.hash="";});
 function rota(){
   var h=location.hash.slice(1), f=null;
