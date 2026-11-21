@@ -7,6 +7,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8655690012436378"
+     crossorigin="anonymous"></script>
 <style>
 :root{
   --bg:#F2F3F5; --panel:#FFFFFF; --ink:#0B0B0F; --muted:#575C68; --line:#D3D6DC; --accent:#FFD400;
@@ -196,17 +198,17 @@ main{margin-left:312px;padding:40px 44px 64px;max-width:1280px}
 <script>
 var CSV_URL = "catalogo.csv";
 
-// Anúncios. Com ativo:false aparecem só os espaços reservados.
-// Para usar o Google AdSense: ativo:true, seu código em client (ca-pub-...) e o número de cada bloco em slots.
-var ADS = {ativo:false, client:"ca-pub-0000000000000000", slots:{topo:"",grade:"",rodape:"",leitor:"",lateral:""}};
+// Anúncios (Google AdSense). Cole em slots o número de cada bloco criado no painel do AdSense.
+// Bloco sem número mostra um espaço reservado enquanto reservas for true; com reservas:false ele some.
+var ADS = {client:"ca-pub-8655690012436378", reservas:true, slots:{topo:"",grade:"",rodape:"",leitor:"",lateral:""}};
 function anuncio(nome,fmt){
   var rot='<span class="ad-rot">Publicidade</span>';
-  if(ADS.ativo && ADS.slots[nome])
+  if(ADS.slots[nome])
     return '<div class="ad ad-'+nome+'">'+rot+'<ins class="adsbygoogle" style="display:block" data-ad-client="'+ADS.client+'" data-ad-slot="'+ADS.slots[nome]+'" data-ad-format="auto" data-full-width-responsive="true"></ins></div>';
+  if(!ADS.reservas) return "";
   return '<div class="ad ad-'+nome+'">'+rot+'<div class="ad-box">Espaço publicitário · '+fmt+'</div></div>';
 }
 function ativaAds(){
-  if(!ADS.ativo) return;
   document.querySelectorAll("ins.adsbygoogle:not([data-done])").forEach(function(el){
     if(!el.offsetWidth) return;
     el.setAttribute("data-done","1");
@@ -215,11 +217,6 @@ function ativaAds(){
 }
 function montaAds(){
   document.querySelectorAll("[data-ad]").forEach(function(e){e.innerHTML=anuncio(e.dataset.ad,e.dataset.fmt);});
-  if(ADS.ativo){
-    var sc=document.createElement("script"); sc.async=true; sc.crossOrigin="anonymous";
-    sc.src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client="+ADS.client;
-    document.head.appendChild(sc);
-  }
 }
 
 var ITENS = [];
