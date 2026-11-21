@@ -1,23 +1,80 @@
-# Acervo de Modelismo
+# Catálogo de quadrinhos
 
-Catálogo de revistas de modelismo (aero, ferro, nauti etc.) para GitHub Pages.
+Página estática que lê a tabela `catalogo.csv`. Para publicar no GitHub Pages, envie estes arquivos para um repositório.
 
-## Arquivos
-- `index.html`: catálogo com menu lateral (categorias, ano, título), busca e rolagem infinita (mais recentes primeiro).
-- `leitor.html`: abre em nova janela com o PDF em iframe e botão de download.
-- `catalogo.csv`: os dados. Uma linha por revista.
-- `estilo.css`, `app.js`: estilo e funções compartilhadas.
-- `logo.png` (opcional): logo quadrado exibido no canto superior esquerdo.
+## Estrutura do repositório
 
-## Colunas do catalogo.csv
-`id, categoria, titulo, edicao, ano, data_postagem, capa_url, pdf_url, download_url`
-
-- `id` deve ser único.
-- `data_postagem` no formato AAAA-MM-DD define a ordem na tela inicial.
-- `capa_url` e `pdf_url` precisam ser links que permitam iframe (ex.: Google Drive `.../preview`).
-- `download_url` é o link do botão de download (se vazio, usa `pdf_url`).
-- Categorias, anos e títulos novos aparecem sozinhos no menu.
-- Valores com vírgula devem ficar entre aspas.
+```
+index.html      a página
+catalogo.csv    a tabela (uma linha por quadrinho)
+logo.png        logo quadrado (opcional)
+capas/          imagens de capa
+pdfs/           arquivos PDF para leitura
+```
 
 ## Publicar
-Envie a pasta para um repositório e ative Settings → Pages. Abrir o `index.html` direto do computador não funciona, porque o navegador bloqueia a leitura do CSV.
+
+1. Crie um repositório no GitHub e envie todos os arquivos desta pasta (Add file > Upload files).
+2. Abra Settings > Pages. Em "Build and deployment", escolha "Deploy from a branch", branch `main`, pasta `/ (root)`, e salve.
+3. Em alguns minutos o endereço aparece na mesma tela. Abra a página por ele.
+
+A página só funciona pelo endereço do GitHub Pages. Abrir o `index.html` direto no computador não carrega a tabela.
+
+## Colunas do catalogo.csv
+
+| Coluna | Conteúdo | Obrigatória |
+|---|---|---|
+| titulo | Nome principal, como "Homem-Aranha" | sim |
+| subtitulo | Linha ou coleção, como "Aranhaverso" | não |
+| arco | Arco ou história | não |
+| editora | Nome da editora | não |
+| ano | Ano de lançamento, só o número | não |
+| data_postagem | Data em que entrou no catálogo, `AAAA-MM-DD` | recomendada |
+| pdf | Caminho do PDF (`pdfs/batman-ano-um.pdf`) ou link de um PDF na internet | não |
+| capa | Caminho de uma imagem (`capas/batman-ano-um.jpg`), de um PDF ou link incorporável | não |
+| cor_fundo | Cor da capa gerada, como `#1E2F4F` | não |
+| cor_texto | Cor do texto da capa gerada, como `#F5D547` | não |
+| motivo | Desenho de fundo da capa gerada, de 0 a 3 | não |
+
+Regras:
+
+- Escreva sempre igual. "Marvel" e "Marvel Comics" viram duas editoras nos filtros.
+- A data precisa estar completa, como `2026-11-05`. É ela que define quem aparece primeiro.
+- Se a `capa` estiver vazia ou a imagem não carregar, a página usa a capa colorida gerada com as colunas de cor.
+- Se a `capa` for um PDF ou outro link que não seja imagem, a página mostra a primeira página dentro de um iframe, sem permitir cliques nele.
+- Se `pdf` estiver vazio, o título abre a leitura com o aviso "ainda não tem PDF".
+- O arquivo pode ser salvo com vírgula ou ponto e vírgula (o Excel em português usa ponto e vírgula) e em UTF-8.
+- Linhas sem `titulo` são ignoradas.
+
+## Como o PDF e a capa são exibidos
+
+O PDF abre em um iframe, com o leitor de PDF do próprio navegador. Links do Google Drive (`drive.google.com/file/d/.../view`) são convertidos para a versão de pré-visualização, e o arquivo precisa estar compartilhado como "Qualquer pessoa com o link".
+
+Limites do iframe:
+
+- Sites que proíbem ser incorporados não aparecem. Nesse caso, use o botão "Abrir PDF".
+- Em celulares o navegador pode mostrar só a primeira página ou oferecer o download. O botão "Abrir PDF" abre o arquivo em outra aba.
+
+## Capas, PDFs e logo
+
+- Capas: formato retrato, proporção 2:3 (por exemplo 600x900), em JPG ou WebP, de preferência abaixo de 300 KB.
+- PDFs: o GitHub aceita arquivos de até 100 MB. Mantenha bem abaixo disso, e envie só PDFs que você tem direito de disponibilizar. O GitHub Pages é público.
+- Logo: um arquivo `logo.png` quadrado na raiz do repositório aparece no canto superior esquerdo.
+
+## Atualizar
+
+Edite o `catalogo.csv` no GitHub (ícone de lápis), ou envie uma versão nova exportada da planilha (Arquivo > Fazer download > CSV). A página mostra a mudança em alguns minutos, o tempo do cache do GitHub Pages.
+
+## Anúncios (Google AdSense)
+
+O código do AdSense (`ca-pub-8655690012436378`) está no `<head>` do `index.html`. Com ele, o Google pode exibir anúncios automáticos se a opção estiver ligada no painel do AdSense.
+
+A página também tem cinco pontos prontos para blocos de anúncio manuais: um acima da lista, um entre os quadrinhos a cada 8 títulos, um no rodapé, um no topo do leitor e uma coluna lateral no leitor (só em telas largas). Cada ponto só aparece quando você cola o número do bloco em `slots`, no começo do script:
+
+```js
+var ADS = {client:"ca-pub-8655690012436378", slots:{topo:"111", grade:"222", rodape:"333", leitor:"444", lateral:"555"}};
+```
+
+O número de cada bloco vem do painel do AdSense (Anúncios > Por bloco de anúncios), no atributo `data-ad-slot`. Ponto sem número não aparece e não ocupa espaço.
+
+O AdSense também pede um arquivo `ads.txt` na raiz do repositório e a aprovação do site. O painel mostra o texto exato desse arquivo.
