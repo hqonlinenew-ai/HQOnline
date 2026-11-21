@@ -26,8 +26,7 @@ button,input,select,summary{font:inherit;color:inherit}
 
 /* Logo + nome, canto superior esquerdo */
 .brandbar{position:fixed;z-index:21;left:16px;top:calc(16px + env(safe-area-inset-top,0px));width:280px;height:64px;display:flex;align-items:center;gap:12px}
-.logo{flex:none;width:64px;height:64px;border:2px dashed var(--line);border-radius:14px;background:var(--panel);cursor:pointer;display:grid;place-items:center;overflow:hidden;padding:0;color:var(--muted);font-size:.75rem;text-align:center;line-height:1.15}
-.logo:hover{border-color:var(--ink)}
+.logo{flex:none;width:64px;height:64px;border:2px dashed var(--line);border-radius:14px;background:var(--panel);cursor:default;display:grid;place-items:center;overflow:hidden;padding:0;color:var(--muted);font-size:.75rem;text-align:center;line-height:1.15}
 .logo.has{border-style:solid}
 .logo img{width:100%;height:100%;object-fit:contain;display:block}
 .brand{font:800 1.3rem/1.05 var(--display);letter-spacing:-.01em;margin:0}
@@ -131,8 +130,9 @@ main{margin-left:312px;padding:40px 40px 64px;max-width:1280px}
 <body>
 
 <div class="brandbar">
-  <button class="logo" id="logo" type="button" aria-label="Escolher logo (imagem quadrada)"><span id="logoph">Logo<br>aqui</span></button>
-  <input type="file" id="logoin" accept="image/*" hidden>
+  <div class="logo has" id="logo" role="img" aria-label="Logo">
+    <img src="https://raw.githubusercontent.com/hqonlinenew-ai/HQOnline/refs/heads/main/Logo%20Futurista%20Amarelo%20ONLINE.png" alt="">
+  </div>
   <p class="brand">Catálogo de quadrinhos</p>
 </div>
 
@@ -179,8 +179,6 @@ main{margin-left:312px;padding:40px 40px 64px;max-width:1280px}
 </main>
 
 <script>
-// Logo: coloque um arquivo quadrado chamado logo.png na mesma pasta do index.html.
-var LOGO_SRC = "logo.png";
 var CSV_URL = "catalogo.csv";
 
 var ITENS = [];
@@ -315,15 +313,6 @@ $("q").addEventListener("input", function(e){st.q=e.target.value.trim();renderiz
 $("sort").addEventListener("change", function(e){st.sort=e.target.value;renderiza();});
 $("reset").addEventListener("click", limpa);
 
-// Logo
-function mostraLogo(src){
-  var l=$("logo"); l.classList.add("has"); l.innerHTML='<img alt="Logo" src="'+src+'">';
-}
-if(LOGO_SRC){var im=new Image();im.onload=function(){mostraLogo(LOGO_SRC);};im.src=LOGO_SRC;}
-$("logo").addEventListener("click", function(){$("logoin").click();});
-$("logoin").addEventListener("change", function(e){
-  var f=e.target.files[0]; if(f) mostraLogo(URL.createObjectURL(f));
-});
 
 
 // Leitor de PDF (iframe)
