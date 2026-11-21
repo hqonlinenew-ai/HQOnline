@@ -65,14 +65,16 @@ Limites do iframe:
 
 Edite o `catalogo.csv` no GitHub (ícone de lápis), ou envie uma versão nova exportada da planilha (Arquivo > Fazer download > CSV). A página mostra a mudança em alguns minutos, o tempo do cache do GitHub Pages.
 
-## Anúncios
+## Anúncios (Google AdSense)
 
-A página tem espaços reservados para anúncios: um banner acima da lista, um entre os quadrinhos a cada 8 títulos, um no rodapé, um banner no topo do leitor e uma coluna lateral no leitor (só em telas largas). Todos aparecem com o rótulo "Publicidade".
+O código do AdSense (`ca-pub-8655690012436378`) está no `<head>` do `index.html`. Com ele, o Google pode exibir anúncios automáticos se a opção estiver ligada no painel do AdSense.
 
-Para ligar o Google AdSense, edite no começo do script do `index.html`:
+A página também tem cinco pontos prontos para blocos de anúncio manuais: um acima da lista, um entre os quadrinhos a cada 8 títulos, um no rodapé, um no topo do leitor e uma coluna lateral no leitor (só em telas largas). Cada ponto só aparece quando você cola o número do bloco em `slots`, no começo do script:
 
 ```js
-var ADS = {ativo:true, client:"ca-pub-SEU-CODIGO", slots:{topo:"111", grade:"222", rodape:"333", leitor:"444", lateral:"555"}};
+var ADS = {client:"ca-pub-8655690012436378", slots:{topo:"111", grade:"222", rodape:"333", leitor:"444", lateral:"555"}};
 ```
 
-Cada número em `slots` é o ID de um bloco criado no painel do AdSense. Um bloco com número vazio continua mostrando o espaço reservado. O AdSense também pede um arquivo `ads.txt` na raiz do repositório e a aprovação do site.
+O número de cada bloco vem do painel do AdSense (Anúncios > Por bloco de anúncios), no atributo `data-ad-slot`. Ponto sem número não aparece e não ocupa espaço.
+
+O AdSense também pede um arquivo `ads.txt` na raiz do repositório e a aprovação do site. O painel mostra o texto exato desse arquivo.
