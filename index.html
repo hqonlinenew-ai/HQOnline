@@ -3,457 +3,104 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Catálogo de quadrinhos</title>
+<title>Acervo de Revistas de Modelismo</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8655690012436378"
-     crossorigin="anonymous"></script>
-<style>
-:root{
-  --bg:#F2F3F5; --panel:#FFFFFF; --ink:#0B0B0F; --muted:#575C68; --line:#D3D6DC; --accent:#FFD400;
-  --display:"Chakra Petch","Arial Narrow",system-ui,sans-serif; --body:"Instrument Sans",system-ui,sans-serif;
-  color-scheme:light;
-  box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
-}
-html{scroll-padding-top:env(safe-area-inset-top,0px)}
-*{box-sizing:border-box}
-body{margin:0;background-color:var(--bg);background-image:linear-gradient(rgba(11,11,15,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(11,11,15,.05) 1px,transparent 1px);background-size:28px 28px;color:var(--ink);font:400 1rem/1.5 var(--body)}
-button,input,select,summary{font:inherit;color:inherit}
-:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
-
-/* Logo + nome, canto superior esquerdo */
-.brandbar{position:fixed;z-index:21;left:16px;top:calc(16px + env(safe-area-inset-top,0px));width:280px;height:64px;display:flex;align-items:center;gap:14px}
-.logo{flex:none;width:64px;height:64px;border:2px solid var(--ink);border-radius:4px;background:var(--ink);display:grid;place-items:center;overflow:hidden;padding:0;box-shadow:4px 4px 0 var(--accent)}
-.logo img{width:100%;height:100%;object-fit:contain;display:block}
-.brand{font:700 1.1rem/1.05 var(--display);letter-spacing:.06em;text-transform:uppercase;margin:0}
-
-/* Menu lateral suspenso */
-.menu{position:fixed;z-index:20;left:16px;top:calc(96px + env(safe-area-inset-top,0px));bottom:calc(22px + env(safe-area-inset-bottom,0px));width:280px;
-  background:var(--panel);border:2px solid var(--ink);border-radius:6px;box-shadow:6px 6px 0 var(--accent);
-  display:flex;flex-direction:column;overflow:hidden}
-.menu .scroll{overflow-y:auto;padding:18px;flex:1}
-.search{width:100%;padding:10px 12px;border:1.5px solid var(--ink);border-radius:2px;background:var(--bg)}
-.grp{border-top:1px solid var(--line);margin-top:14px}
-.grp:first-of-type{margin-top:16px}
-.grp summary{list-style:none;display:flex;justify-content:space-between;align-items:center;gap:8px;padding:12px 4px 8px;cursor:pointer;font:700 .8125rem/1.2 var(--display);letter-spacing:.1em;text-transform:uppercase}
-.grp summary::-webkit-details-marker{display:none}
-.grp summary::after{content:"";width:8px;height:8px;border-right:2px solid var(--ink);border-bottom:2px solid var(--ink);transform:rotate(45deg);margin:-4px 4px 0 auto;transition:transform .15s}
-.grp[open] summary::after{transform:rotate(-135deg);margin-top:4px}
-.badge{font:700 .75rem/1.4 var(--display);min-width:20px;padding:0 6px;border:1.5px solid var(--ink);border-radius:2px;background:var(--accent);color:var(--ink);text-align:center}
-.badge:empty{display:none}
-.list{list-style:none;margin:0;padding:0 0 6px;display:grid;gap:2px;max-height:240px;overflow-y:auto}
-.opt{width:100%;display:flex;justify-content:space-between;align-items:center;gap:8px;padding:7px 10px;border:0;border-radius:2px;background:none;text-align:left;cursor:pointer;font-size:.9375rem}
-.opt:hover{background:var(--bg)}
-.opt[aria-pressed="true"]{background:var(--accent);color:var(--ink);font-weight:600;box-shadow:inset 4px 0 0 var(--ink)}
-.opt .n{font-size:.8125rem;color:var(--muted);font-variant-numeric:tabular-nums}
-.opt[aria-pressed="true"] .n{color:var(--ink)}
-.zero:not([aria-pressed="true"]){opacity:.4}
-.chips{display:flex;flex-wrap:wrap;gap:6px;padding:0 0 8px}
-.chip{padding:5px 10px;border:1.5px solid var(--line);border-radius:2px;background:none;cursor:pointer;font-size:.875rem;font-variant-numeric:tabular-nums}
-.chip:hover{border-color:var(--ink)}
-.chip[aria-pressed="true"]{background:var(--accent);color:var(--ink);border-color:var(--ink);font-weight:600}
-.reset{margin-top:18px;width:100%;padding:10px;border:1.5px solid var(--ink);border-radius:2px;background:none;cursor:pointer;font:600 .8125rem var(--display);letter-spacing:.08em;text-transform:uppercase}
-.reset:hover{background:var(--accent)}
-
-/* Área principal */
-main{margin-left:312px;padding:40px 44px 64px;max-width:1280px}
-.top{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap;margin-bottom:34px}
-.count{display:inline-block;font:700 clamp(2.25rem,5.5vw,4.25rem)/1.05 var(--display);letter-spacing:-.005em;text-transform:uppercase;margin:0;padding-right:.2em;background:linear-gradient(transparent 62%,var(--accent) 62%)}
-.desc{margin:12px 0 0;color:var(--muted);max-width:60ch}
-.sort{display:flex;align-items:center;gap:8px;font:600 .75rem var(--display);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
-.sort select{padding:8px 10px;border:1.5px solid var(--ink);border-radius:2px;background:var(--panel);font:500 .875rem var(--body);letter-spacing:0;text-transform:none;color:var(--ink)}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:32px 26px}
-.card{display:block;color:inherit;text-decoration:none;border-radius:6px;animation:in .22s ease-out both}
-@keyframes in{from{opacity:0;transform:scale(.97)}to{opacity:1;transform:none}}
-.card:hover .meta b{text-decoration:underline}
-.cover{position:relative;aspect-ratio:2/3;border:2px solid var(--ink);border-radius:3px;overflow:hidden;padding:14px;display:flex;flex-direction:column;justify-content:space-between;box-shadow:5px 5px 0 var(--accent);transition:transform .15s,box-shadow .15s}
-.card:hover .cover,.card:focus-visible .cover{transform:translate(-2px,-2px);box-shadow:8px 8px 0 var(--accent)}
-.cover::before{content:"";position:absolute;inset:0;pointer-events:none;background:currentColor;opacity:.16}
-.m0::before{background:radial-gradient(currentColor 24%,transparent 26%) 0 0/9px 9px;opacity:.25;-webkit-mask-image:linear-gradient(160deg,transparent 30%,#000);mask-image:linear-gradient(160deg,transparent 30%,#000)}
-.m1::before{background:repeating-linear-gradient(135deg,currentColor 0 8px,transparent 8px 22px);opacity:.14}
-.m2::before{clip-path:polygon(50% 8%,60% 32%,88% 22%,72% 46%,96% 60%,66% 64%,64% 92%,50% 70%,34% 92%,34% 64%,4% 60%,28% 46%,12% 22%,40% 32%)}
-.m3::before{clip-path:polygon(0 0,58% 0,38% 100%,0 100%)}
-.cover>*{position:relative}
-.cover>iframe{position:absolute;inset:0;width:100%;height:100%;border:0;pointer-events:none;z-index:1;background:#fff}
-.cover>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1}
-.ed{align-self:flex-start;font:700 .6875rem/1 var(--display);letter-spacing:.08em;text-transform:uppercase;padding:5px 7px;border:1.5px solid currentColor;border-radius:2px}
-.ct{font:700 1.45rem/1.02 var(--display);letter-spacing:-.01em;margin:0;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere}
-.cs{margin:6px 0 0;font:500 .9375rem/1.2 var(--body);opacity:.9}
-.meta{margin:14px 2px 0;font-size:.875rem;line-height:1.35}
-.meta b{display:block;font-weight:600}
-.meta span{color:var(--muted)}
-.fim{margin-top:40px;text-align:center;color:var(--muted);font-size:.875rem}
-.mais{margin-top:8px;padding:10px 18px;border:1.5px solid var(--ink);border-radius:2px;background:none;cursor:pointer;font:600 .8125rem var(--display);letter-spacing:.08em;text-transform:uppercase;color:var(--ink)}
-.mais:hover{background:var(--accent)}
-.empty{grid-column:1/-1;padding:48px 0;color:var(--muted)}
-.empty button{margin-top:12px;padding:10px 16px;border:2px solid var(--ink);border-radius:2px;background:var(--accent);color:var(--ink);cursor:pointer;font:600 .8125rem var(--display);letter-spacing:.08em;text-transform:uppercase}
-
-/* Leitor */
-.leitor{position:fixed;inset:0;z-index:40;background:var(--bg);display:flex;flex-direction:column;padding-top:env(safe-area-inset-top,0px)}
-.leitor[hidden]{display:none}
-.lbar{display:flex;align-items:center;gap:12px;padding:10px 16px;background:var(--ink);color:#fff;border-bottom:4px solid var(--accent);flex-wrap:wrap}
-.lbar button,.lbar a{padding:8px 12px;border:1.5px solid var(--accent);border-radius:2px;background:none;color:var(--accent);cursor:pointer;font:600 .8125rem var(--display);letter-spacing:.08em;text-transform:uppercase;text-decoration:none}
-.lbar button:hover,.lbar a:hover{background:var(--accent);color:var(--ink)}
-.lbar :focus-visible{outline-color:var(--accent)}
-.ltit{flex:1;min-width:160px;display:flex;flex-direction:column;line-height:1.25}
-.ltit b{font:700 1.1rem/1.1 var(--display);color:#fff}
-.ltit span{color:#B8BCC6;font-size:.8125rem}
-.ltools{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.lmsg{text-align:center;color:var(--muted);padding:48px 16px;margin:0}
-.lmsg:empty{display:none}
-.lframe{flex:1;width:100%;border:0;background:var(--panel);display:block}
-.lframe[hidden]{display:none}
-
-/* Anúncios */
-.ad{display:block;margin:18px 0}
-.ad-rot{display:block;font:600 .625rem/1 var(--display);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:5px}
-.grid>.ad{grid-column:1/-1;margin:2px 0}
-.ad-leitor{margin:0;padding:6px 16px 8px;background:var(--panel);border-bottom:1px solid var(--line)}
-.lcorpo{flex:1;display:flex;min-height:0}
-.lmain{flex:1;min-width:0;display:flex;flex-direction:column}
-.lateral{display:none;width:328px;flex:none;padding:12px 14px;border-left:1px solid var(--line);background:var(--panel);overflow:auto}
-.lateral .ad{margin:0}
-@media (min-width:1180px){.lateral{display:block}}
-.lateral:empty{display:none!important}
-.ad:has(ins[data-ad-status="unfilled"]){display:none}
-
-/* Mobile */
-.fab,.scrim{display:none}
-@media (max-width:860px){
-  .brandbar{position:absolute;left:18px;top:calc(16px + env(safe-area-inset-top,0px))}
-  main{margin-left:0;padding:108px 20px 110px}
-  .menu{left:12px;right:18px;width:auto;top:auto;max-height:78vh;bottom:calc(18px + env(safe-area-inset-bottom,0px));transform:translateY(calc(100% + 40px));transition:transform .25s ease;visibility:hidden}
-  .menu.open{transform:none;visibility:visible}
-  .fab{display:inline-flex;position:fixed;z-index:15;left:50%;transform:translateX(-50%);bottom:calc(22px + env(safe-area-inset-bottom,0px));padding:12px 22px;border:2px solid var(--ink);border-radius:4px;background:var(--accent);color:var(--ink);font:700 .875rem var(--display);letter-spacing:.08em;text-transform:uppercase;cursor:pointer;box-shadow:4px 4px 0 var(--ink)}
-  .scrim{position:fixed;inset:0;z-index:19;background:rgba(10,10,15,.5);border:0}
-  .scrim.show{display:block}
-  .grid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:26px 20px}
-}
-@media (prefers-reduced-motion:reduce){.card{animation:none}.menu{transition:none}.cover{transition:none}}
-</style>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="estilo.css">
 </head>
 <body>
-
-<div class="brandbar">
-  <div class="logo has" id="logo" role="img" aria-label="Logo">
-    <img src="https://raw.githubusercontent.com/hqonlinenew-ai/HQOnline/refs/heads/main/Logo%20Futurista%20Amarelo%20ONLINE.png" alt="">
-  </div>
-  <p class="brand">Catálogo de quadrinhos</p>
-</div>
+<header class="topo">
+  <!-- Troque por seu logo quadrado: coloque logo.png na mesma pasta -->
+  <div class="logo"><img src="logo.png" alt="Logo" onerror="this.replaceWith(Object.assign(document.createElement('span'),{innerHTML:'<svg viewBox=&quot;0 0 24 24&quot;><path d=&quot;M2 14l9-9 3 3-9 9zM14 8l8 3-3 3zM3 21h18&quot;/></svg>'}))"></div>
+  <h1>Acervo de Modelismo</h1>
+  <button class="btn-menu" id="abrirMenu" aria-expanded="false" aria-controls="menu">Filtros</button>
+  <div class="busca"><input id="busca" type="search" placeholder="Buscar por título ou edição" aria-label="Buscar"></div>
+</header>
 
 <aside class="menu" id="menu" aria-label="Filtros do catálogo">
-  <div class="scroll">
-    <input class="search" id="q" type="search" placeholder="Buscar título, subtítulo ou arco" aria-label="Buscar" autocomplete="off">
-    <div id="grupos"></div>
-    <button class="reset" id="reset" type="button">Limpar filtros</button>
-  </div>
+  <details open><summary>Categorias</summary><div class="opcoes" id="f-categoria"></div></details>
+  <details open><summary>Ano de publicação</summary><div class="opcoes" id="f-ano"></div></details>
+  <details><summary>Título</summary><div class="opcoes" id="f-titulo"></div></details>
+  <button class="limpar" id="limpar">Limpar filtros</button>
 </aside>
-
-<section class="leitor" id="leitor" hidden aria-label="Leitor de PDF">
-  <header class="lbar">
-    <button type="button" id="lback">Voltar ao catálogo</button>
-    <div class="ltit"><b id="ltit"></b><span id="lsub"></span></div>
-    <div class="ltools">
-      <a id="lopen" target="_blank" rel="noopener" hidden>Abrir PDF</a>
-    </div>
-  </header>
-  <div data-ad="leitor"></div>
-  <div class="lcorpo">
-    <div class="lmain">
-      <p class="lmsg" id="lmsg"></p>
-      <iframe class="lframe" id="lframe" title="Leitura do PDF" hidden allow="fullscreen"></iframe>
-    </div>
-    <aside class="lateral" data-ad="lateral" aria-label="Publicidade"></aside>
-  </div>
-</section>
-
-<button class="scrim" id="scrim" type="button" aria-label="Fechar filtros"></button>
-<button class="fab" id="fab" type="button" aria-controls="menu" aria-expanded="false">Filtros</button>
+<div class="fundo" id="fundo"></div>
 
 <main>
-  <div class="top">
-    <div>
-      <h1 class="count" id="count" aria-live="polite"></h1>
-      <p class="desc" id="desc"></p>
-    </div>
-    <label class="sort">Ordenar por
-      <select id="sort">
-        <option value="post">Postados recentemente</option>
-        <option value="novo">Ano (mais novos)</option>
-        <option value="antigo">Ano (mais antigos)</option>
-        <option value="az">Título (A–Z)</option>
-      </select>
-    </label>
-  </div>
-  <div data-ad="topo"></div>
-  <section class="grid" id="grid" aria-label="Quadrinhos"></section>
-  <div class="fim" id="fim"><p id="fimtxt" aria-live="polite"></p><button type="button" class="mais" id="mais">Carregar mais</button></div>
-  <div data-ad="rodape"></div>
+  <p class="resumo" id="resumo" aria-live="polite"></p>
+  <div class="grade" id="grade"></div>
+  <p class="vazio" id="vazio" hidden>Nenhuma revista encontrada. Limpe os filtros ou mude a busca.</p>
+  <p class="erro" id="erro" hidden></p>
+  <div id="sentinela"></div>
 </main>
 
+<script src="app.js"></script>
 <script>
-var CSV_URL = "catalogo.csv";
+const LOTE=12;
+let todas=[],visiveis=[],mostradas=0;
+const filtros={categoria:"",ano:"",titulo:"",q:""};
+const $=s=>document.querySelector(s);
 
-// Google AdSense. O código geral fica no <head>. Para exibir anúncios nos espaços da página,
-// cole em slots o número de cada bloco criado no painel do AdSense; espaço sem número não aparece.
-var ADS = {client:"ca-pub-8655690012436378", slots:{topo:"",grade:"",rodape:"",leitor:"",lateral:""}};
-function anuncio(nome){
-  if(!ADS.slots[nome]) return "";
-  return '<div class="ad ad-'+nome+'"><span class="ad-rot">Publicidade</span><ins class="adsbygoogle" style="display:block" data-ad-client="'+ADS.client+'" data-ad-slot="'+ADS.slots[nome]+'" data-ad-format="auto" data-full-width-responsive="true"></ins></div>';
+function contar(lista,campo){
+  const m=new Map();
+  lista.forEach(r=>{if(r[campo])m.set(r[campo],(m.get(r[campo])||0)+1)});
+  return [...m.entries()];
 }
-function ativaAds(){
-  document.querySelectorAll("ins.adsbygoogle:not([data-done])").forEach(function(el){
-    if(!el.offsetWidth) return;
-    el.setAttribute("data-done","1");
-    try{(window.adsbygoogle=window.adsbygoogle||[]).push({});}catch(e){}
-  });
+function montarFiltro(id,campo,ordem){
+  const caixa=$("#"+id);
+  const itens=contar(todas,campo).sort(ordem);
+  caixa.innerHTML=[["",todas.length,"Todas"],...itens.map(([v,n])=>[v,n,v])].map(([v,n,rot])=>
+    `<button class="opcao" data-campo="${campo}" data-valor="${esc(v)}" aria-pressed="${filtros[campo]===v}">${esc(rot)}<span>${n}</span></button>`).join("");
 }
-function montaAds(){
-  document.querySelectorAll("[data-ad]").forEach(function(e){e.innerHTML=anuncio(e.dataset.ad);});
+function montarMenu(){
+  montarFiltro("f-categoria","categoria",(a,b)=>a[0].localeCompare(b[0],"pt-BR"));
+  montarFiltro("f-ano","ano",(a,b)=>b[0].localeCompare(a[0]));
+  montarFiltro("f-titulo","titulo",(a,b)=>a[0].localeCompare(b[0],"pt-BR"));
 }
+function aplicar(){
+  const q=filtros.q.toLowerCase();
+  visiveis=todas.filter(r=>
+    (!filtros.categoria||r.categoria===filtros.categoria)&&
+    (!filtros.ano||r.ano===filtros.ano)&&
+    (!filtros.titulo||r.titulo===filtros.titulo)&&
+    (!q||(r.titulo+" "+r.edicao).toLowerCase().includes(q)))
+    .sort((a,b)=>(b.data_postagem||"").localeCompare(a.data_postagem||""));
+  mostradas=0;
+  $("#grade").innerHTML="";
+  $("#vazio").hidden=visiveis.length>0;
+  $("#resumo").textContent=visiveis.length+(visiveis.length===1?" revista":" revistas")+" · mais recentes primeiro";
+  montarMenu();
+  maisCards();
+}
+function card(r){
+  const capa=urlValida(r.capa_url)
+    ?`<iframe src="${esc(r.capa_url)}" title="Capa de ${esc(r.titulo)} ${esc(r.edicao)}" loading="lazy" tabindex="-1" sandbox=""></iframe>`
+    :`<div class="sem-capa">${esc(r.titulo)}<br>${esc(r.edicao)}</div>`;
+  return `<a class="card" href="leitor.html?id=${encodeURIComponent(r.id)}" target="_blank" rel="noopener">
+    <div class="capa">${capa}</div>
+    <div class="carimbo"><h2>${esc(r.titulo)}</h2><p>${esc(r.categoria)} · ${esc(r.edicao)}</p><p>${esc(r.ano)}</p></div></a>`;
+}
+function maisCards(){
+  if(mostradas>=visiveis.length)return;
+  const lote=visiveis.slice(mostradas,mostradas+LOTE);
+  $("#grade").insertAdjacentHTML("beforeend",lote.map(card).join(""));
+  mostradas+=lote.length;
+}
+const obs=new IntersectionObserver(es=>{if(es[0].isIntersecting)maisCards()},{rootMargin:"400px"});
+obs.observe($("#sentinela"));
 
-var ITENS = [];
-var GRUPOS = [
- {k:"a",nome:"Ano",chips:true,aberto:false},
- {k:"t",nome:"Título",aberto:true},
- {k:"s",nome:"Subtítulo",aberto:false},
- {k:"r",nome:"Arcos",aberto:false},
- {k:"e",nome:"Editoras",aberto:true}
-];
-var $ = function(id){return document.getElementById(id)};
-function norm(s){return s.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();}
-function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;");}
-
-var st = {q:"",sort:"post",sel:{a:[],t:[],s:[],r:[],e:[]}};
-
-function passa(f, ignora){
-  for(var i=0;i<GRUPOS.length;i++){
-    var k=GRUPOS[i].k;
-    if(k!==ignora && st.sel[k].length && st.sel[k].indexOf(String(f[k]))<0) return false;
-  }
-  if(st.q && norm(f.t+" "+f.s+" "+f.r).indexOf(norm(st.q))<0) return false;
-  return true;
-}
-
-function montaGrupos(){
-  var html = GRUPOS.map(function(g){
-    var vals = ITENS.map(function(f){return String(f[g.k])}).filter(function(v,i,a){return v&&v!=="0"&&a.indexOf(v)===i});
-    vals.sort(g.k==="a" ? function(a,b){return b-a} : function(a,b){return a.localeCompare(b,"pt-BR")});
-    var corpo = g.chips
-      ? '<div class="chips">'+vals.map(function(v){return '<button type="button" class="chip" data-k="'+g.k+'" data-v="'+esc(v)+'" aria-pressed="false">'+v+'</button>'}).join("")+'</div>'
-      : '<ul class="list">'+vals.map(function(v){return '<li><button type="button" class="opt" data-k="'+g.k+'" data-v="'+esc(v)+'" aria-pressed="false"><span>'+esc(v)+'</span><span class="n"></span></button></li>'}).join("")+'</ul>';
-    return '<details class="grp"'+(g.aberto?" open":"")+'><summary><span>'+g.nome+'</span><span class="badge" data-b="'+g.k+'"></span></summary>'+corpo+'</details>';
-  }).join("");
-  $("grupos").innerHTML = html;
-}
-
-function atualizaMenu(){
-  document.querySelectorAll("[data-k][data-v]").forEach(function(b){
-    var k=b.dataset.k, v=b.dataset.v;
-    var n = ITENS.filter(function(f){return passa(f,k) && String(f[k])===v}).length;
-    b.setAttribute("aria-pressed", String(st.sel[k].indexOf(v)>=0));
-    b.classList.toggle("zero", n===0);
-    var c = b.querySelector(".n"); if(c) c.textContent = n;
-    if(!c) b.title = n+(n===1?" item":" itens");
-  });
-  GRUPOS.forEach(function(g){
-    var n = st.sel[g.k].length;
-    document.querySelector('[data-b="'+g.k+'"]').textContent = n || "";
-  });
-}
-
-function ativos(){
-  return GRUPOS.reduce(function(s,g){return s+st.sel[g.k].length},0)+(st.q?1:0);
-}
-function descricao(){
-  var p=[];
-  GRUPOS.forEach(function(g){ if(st.sel[g.k].length) p.push(g.nome+": "+st.sel[g.k].join(", ")); });
-  if(st.q) p.push("busca “"+st.q+"”");
-  return p.length ? "Filtros ativos. "+p.join("; ")+"." : "Sem filtros."+(st.sort==="post"?" Os últimos títulos postados vêm primeiro; role a página para carregar mais.":"");
-}
-
-var LOTE = 8, atual = [], vis = 0, obs = null;
-function fmt(p){return p?p.slice(8,10)+"/"+p.slice(5,7)+"/"+p.slice(0,4):"";}
-function cartao(f,i){
-  var img = !f.capa ? "" : ehImagem(f.capa)
-    ? '<img src="'+esc(f.capa)+'" alt="" loading="lazy" onerror="this.remove()">'
-    : '<iframe src="'+esc(capaEmbed(f.capa))+'" title="" tabindex="-1" aria-hidden="true" loading="lazy" scrolling="no"></iframe>';
-  var nome = f.s ? f.t+": "+f.s : f.t;
-  var linhas = [];
-  if(f.r) linhas.push(esc(f.r));
-  var ee = [f.e, f.a||""].filter(Boolean).join(" · "); if(ee) linhas.push(esc(ee));
-  if(f.p) linhas.push("Postado em "+fmt(f.p));
-  return '<a class="card" href="#ler-'+f.id+'" target="_blank" rel="noopener" aria-label="Ler '+esc(nome)+'" style="animation-delay:'+Math.min(i,12)*14+'ms">'+
-    '<div class="cover m'+f.m+'" style="background:'+f.c+';color:'+f.f+'">'+img+
-      (f.e?'<span class="ed">'+esc(f.e)+'</span>':'<span></span>')+
-      '<div><h2 class="ct">'+esc(f.t)+'</h2>'+(f.s?'<p class="cs">'+esc(f.s)+'</p>':'')+'</div>'+
-    '</div>'+
-    '<p class="meta"><b>'+esc(nome)+'</b><span>'+linhas.join("<br>")+'</span></p>'+
-  '</a>';
-}
-function lista(a,b){
-  var h="";
-  for(var i=a;i<b;i++){
-    h+=cartao(atual[i],i-a);
-    if((i+1)%8===0 && i+1<atual.length) h+=anuncio("grade");
-  }
-  return h;
-}
-function statusFim(){
-  var n = atual.length;
-  $("fimtxt").textContent = n ? "Mostrando "+vis+" de "+n : "";
-  $("mais").hidden = vis>=n;
-}
-function renderiza(){
-  atual = ITENS.filter(function(f){return passa(f)});
-  atual.sort(function(a,b){
-    if(st.sort==="post") return b.p.localeCompare(a.p) || a.t.localeCompare(b.t,"pt-BR");
-    if(st.sort==="novo") return b.a-a.a || a.t.localeCompare(b.t,"pt-BR");
-    if(st.sort==="antigo") return a.a-b.a || a.t.localeCompare(b.t,"pt-BR");
-    return a.t.localeCompare(b.t,"pt-BR") || a.s.localeCompare(b.s,"pt-BR");
-  });
-  var n = atual.length;
-  $("count").textContent = n+(n===1?" quadrinho":" quadrinhos");
-  $("desc").textContent = descricao();
-  $("fab").textContent = "Filtros"+(ativos()?" ("+ativos()+")":"");
-  vis = Math.min(LOTE,n);
-  var g = $("grid");
-  if(!n){
-    g.innerHTML = '<div class="empty">Nenhum quadrinho combina com esses filtros.<br><button type="button" id="limpa2">Limpar filtros</button></div>';
-    $("limpa2").onclick = limpa;
-  } else {
-    g.innerHTML = lista(0,vis);
-  }
-  statusFim();
-  atualizaMenu();
-  ativaAds();
-  if(obs){obs.unobserve($("fim"));obs.observe($("fim"));}
-}
-function carrega(){
-  if(vis>=atual.length) return;
-  var ini = vis; vis = Math.min(vis+LOTE,atual.length);
-  $("grid").insertAdjacentHTML("beforeend", lista(ini,vis));
-  statusFim(); ativaAds();
-  if(obs){obs.unobserve($("fim"));obs.observe($("fim"));}
-}
-
-function limpa(){
-  GRUPOS.forEach(function(g){st.sel[g.k]=[]});
-  st.q=""; $("q").value="";
-  renderiza();
-}
-
-$("menu").addEventListener("click", function(e){
-  var b = e.target.closest("[data-k][data-v]"); if(!b) return;
-  var arr = st.sel[b.dataset.k], i = arr.indexOf(b.dataset.v);
-  if(i>=0) arr.splice(i,1); else arr.push(b.dataset.v);
-  renderiza();
+document.addEventListener("click",e=>{
+  const o=e.target.closest(".opcao");
+  if(o){filtros[o.dataset.campo]=o.dataset.valor;aplicar();document.body.classList.remove("menu-aberto");return}
 });
-$("q").addEventListener("input", function(e){st.q=e.target.value.trim();renderiza();});
-$("sort").addEventListener("change", function(e){st.sort=e.target.value;renderiza();});
-$("reset").addEventListener("click", limpa);
+$("#limpar").onclick=()=>{Object.assign(filtros,{categoria:"",ano:"",titulo:"",q:""});$("#busca").value="";aplicar()};
+$("#busca").addEventListener("input",e=>{filtros.q=e.target.value.trim();aplicar()});
+const alternar=()=>{const a=document.body.classList.toggle("menu-aberto");$("#abrirMenu").setAttribute("aria-expanded",a)};
+$("#abrirMenu").onclick=alternar;$("#fundo").onclick=alternar;
 
-
-
-// Leitor de PDF (iframe)
-function slug(f){return norm(f.t+" "+f.s+" "+f.a).replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");}
-function atribuiIds(){var vistos={};ITENS.forEach(function(f){var b=slug(f)||"item",n=vistos[b]=(vistos[b]||0)+1;f.id=n>1?b+"-"+n:b;});}
-var cur=null, savedY=0;
-function msg(t){$("lmsg").textContent=t||"";}
-function embed(u){
-  var m=u.match(/drive\.google\.com\/file\/d\/([^\/?#]+)/)||u.match(/drive\.google\.com\/open\?id=([^&#]+)/);
-  return m?"https://drive.google.com/file/d/"+m[1]+"/preview":u;
-}
-function ehImagem(u){return /\.(png|jpe?g|webp|gif|avif|svg)($|[?#])/i.test(u);}
-function capaEmbed(u){u=embed(u);return (/\.pdf($|[?#])/i.test(u)&&u.indexOf("#")<0)?u+"#page=1&view=FitH&toolbar=0&navpanes=0&scrollbar=0":u;}
-function dentro(v){document.querySelectorAll("main,.menu,.brandbar,.fab").forEach(function(e){e.inert=v;});}
-function carregaPdf(f){
-  var fr=$("lframe"); $("lopen").hidden=true;
-  if(!f.pdf){ fr.hidden=true; fr.src="about:blank"; msg("Este título ainda não tem PDF."); return; }
-  var u=embed(f.pdf); msg("");
-  $("lopen").href=f.pdf; $("lopen").hidden=false;
-  fr.src=(/\.pdf($|[?#])/i.test(u)&&u.indexOf("#")<0)?u+"#view=FitH":u;
-  fr.hidden=false;
-}
-function abreLeitor(f){
-  if($("leitor").hidden) savedY=window.scrollY;
-  cur=f; $("leitor").hidden=false; document.body.style.overflow="hidden"; dentro(true);
-  $("ltit").textContent=(f.s?f.t+": "+f.s:f.t); $("lsub").textContent=[f.r,f.e,f.a||""].filter(Boolean).join(" · ");
-  $("lback").focus(); carregaPdf(f); ativaAds();
-}
-function fechaLeitor(){
-  if($("leitor").hidden) return;
-  $("leitor").hidden=true; document.body.style.overflow=""; dentro(false); cur=null;
-  $("lframe").src="about:blank"; $("lframe").hidden=true; msg("");
-  window.scrollTo(0,savedY);
-}
-$("lback").addEventListener("click",function(){location.hash="";});
-function rota(){
-  var h=location.hash.slice(1), f=null;
-  if(h.indexOf("ler-")===0) f=ITENS.filter(function(x){return "ler-"+x.id===h;})[0]||null;
-  if(f){ if(cur!==f) abreLeitor(f); } else fechaLeitor();
-}
-window.addEventListener("hashchange",rota);
-document.addEventListener("keydown",function(e){ if(e.key==="Escape" && !$("leitor").hidden) location.hash=""; });
-
-// Gaveta no celular
-function abre(v){
-  $("menu").classList.toggle("open", v);
-  $("scrim").classList.toggle("show", v);
-  $("fab").setAttribute("aria-expanded", String(v));
-  if(v) $("q").focus({preventScroll:true}); else $("fab").focus({preventScroll:true});
-}
-$("fab").addEventListener("click", function(){abre(!$("menu").classList.contains("open"));});
-$("scrim").addEventListener("click", function(){abre(false);});
-document.addEventListener("keydown", function(e){if(e.key==="Escape" && $("menu").classList.contains("open")) abre(false);});
-
-$("mais").addEventListener("click", carrega);
-if("IntersectionObserver" in window){
-  obs = new IntersectionObserver(function(es){ if(es[0].isIntersecting) carrega(); },{rootMargin:"200px 0px"});
-  obs.observe($("fim"));
-}
-// Leitura do catalogo.csv
-function hash(s){var h=0;for(var i=0;i<s.length;i++)h=(h*31+s.charCodeAt(i))>>>0;return h;}
-function csv(txt){
-  if(txt.charCodeAt(0)===0xFEFF) txt=txt.slice(1);
-  var l1=txt.split(/\r?\n/)[0], sep=(l1.indexOf(";")>=0&&l1.indexOf(",")<0)?";":",";
-  var rows=[],row=[],cell="",q=false;
-  for(var i=0;i<txt.length;i++){
-    var c=txt[i];
-    if(q){ if(c==='"'){ if(txt[i+1]==='"'){cell+='"';i++;} else q=false; } else cell+=c; }
-    else if(c==='"') q=true;
-    else if(c===sep){row.push(cell);cell="";}
-    else if(c==="\n"||c==="\r"){ if(c==="\r"&&txt[i+1]==="\n") i++; row.push(cell);cell="";rows.push(row);row=[]; }
-    else cell+=c;
-  }
-  if(cell!==""||row.length){row.push(cell);rows.push(row);}
-  return rows;
-}
-var COR=/^#[0-9a-fA-F]{3,8}$/;
-function carregaItens(txt){
-  var rows=csv(txt); if(!rows.length) return [];
-  var h=rows[0].map(function(x){return norm(x).trim().replace(/\s+/g,"_");}), out=[];
-  rows.slice(1).forEach(function(r){
-    var o={}; h.forEach(function(k,i){o[k]=(r[i]||"").trim();});
-    if(!o.titulo) return;
-    var m=parseInt(o.motivo,10); if(!(m>=0&&m<=3)) m=hash(o.titulo+(o.subtitulo||""))%4;
-    out.push({t:o.titulo,s:o.subtitulo||"",r:o.arco||"",e:o.editora||"",a:parseInt(o.ano,10)||0,
-      p:/^\d{4}-\d{2}-\d{2}/.test(o.data_postagem||"")?o.data_postagem.slice(0,10):"",
-      pdf:o.pdf||"",capa:o.capa||"",c:COR.test(o.cor_fundo||"")?o.cor_fundo:"#3B4A5C",f:COR.test(o.cor_texto||"")?o.cor_texto:"#F1F5F9",m:m});
-  });
-  return out;
-}
-function erro(t){$("count").textContent="Não foi possível carregar o catálogo";$("desc").textContent=t;$("grid").innerHTML="";}
-montaAds(); ativaAds();
-$("count").textContent="Carregando…";
-fetch(CSV_URL,{cache:"no-cache"}).then(function(r){ if(!r.ok) throw new Error("http "+r.status); return r.text(); })
-.then(function(txt){
-  ITENS=carregaItens(txt);
-  if(!ITENS.length){erro("A tabela catalogo.csv está vazia ou não tem a coluna “titulo”.");return;}
-  atribuiIds(); montaGrupos(); renderiza(); rota();
-}).catch(function(){
-  erro("Não consegui ler o catalogo.csv. Confira se ele está na mesma pasta do index.html e abra a página pelo endereço do GitHub Pages; abrir o arquivo direto no computador não funciona.");
+carregarCatalogo().then(d=>{todas=d;aplicar()}).catch(err=>{
+  const e=$("#erro");e.hidden=false;
+  e.textContent=err.message+". Se abriu o arquivo direto do computador, publique no GitHub Pages ou rode um servidor local, pois o navegador bloqueia a leitura do CSV em file://.";
 });
 </script>
 </body>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Leitor · Acervo de Modelismo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="estilo.css">
+</head>
+<body class="leitor">
+<header class="leitor-topo" id="topo">
+  <div>
+    <h1 id="titulo">Carregando…</h1>
+    <div class="info" id="info"></div>
+  </div>
+  <div class="acoes">
+    <a class="botao principal" id="baixar" href="#" target="_blank" rel="noopener" download hidden>Baixar PDF</a>
+    <a class="botao" id="voltar" href="index.html">Voltar ao catálogo</a>
+  </div>
+</header>
+<iframe class="leitor-quadro" id="quadro" title="Leitor de PDF" hidden></iframe>
+<p class="erro" id="erro" style="padding:90px 16px" hidden></p>
+
+<script src="app.js"></script>
+<script>
+const $=s=>document.querySelector(s);
+function ajustar(){document.documentElement.style.setProperty("--alt-topo",$("#topo").offsetHeight+"px")}
+window.addEventListener("resize",ajustar);
+const id=new URLSearchParams(location.search).get("id");
+carregarCatalogo().then(d=>{
+  const r=d.find(x=>x.id===id);
+  if(!r)throw new Error("Revista não encontrada");
+  document.title=r.titulo+" "+r.edicao+" · Acervo de Modelismo";
+  $("#titulo").textContent=r.titulo+" · "+r.edicao;
+  $("#info").textContent=r.categoria+" · "+r.ano;
+  const baixar=urlValida(r.download_url)?r.download_url:(urlValida(r.pdf_url)?r.pdf_url:"");
+  if(baixar){$("#baixar").href=baixar;$("#baixar").hidden=false}
+  if(urlValida(r.pdf_url)){$("#quadro").src=r.pdf_url;$("#quadro").hidden=false}
+  else{$("#erro").hidden=false;$("#erro").textContent="Esta revista ainda não tem link de PDF no catalogo.csv."}
+  ajustar();
+}).catch(e=>{$("#titulo").textContent="Não foi possível abrir";$("#erro").hidden=false;$("#erro").textContent=e.message;ajustar()});
+ajustar();
+</script>
+</body>
+</html>
