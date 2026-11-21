@@ -132,7 +132,7 @@ main{margin-left:312px;padding:40px 40px 64px;max-width:1280px}
 
 <div class="brandbar">
   <div class="logo has" id="logo" role="img" aria-label="Logo">
-    <img src="https://raw.githubusercontent.com/hqonlinenew-ai/HQOnline/refs/heads/main/Logo%20Futurista%20Amarelo%20ONLINE.png" alt="Logo">
+    <img src="https://raw.githubusercontent.com/hqonlinenew-ai/HQOnline/refs/heads/main/Logo%20Futurista%20Amarelo%20ONLINE.png" alt="">
   </div>
   <p class="brand">Catálogo de quadrinhos</p>
 </div>
@@ -180,6 +180,11 @@ main{margin-left:312px;padding:40px 40px 64px;max-width:1280px}
 </main>
 
 <script>
+function mostraLogo(src){ ... }
+if(LOGO_SRC){ ... }
+$("logo").addEventListener("click", function(){$("logoin").click();});
+$("logoin").addEventListener("change", function(e){ ... });
+  
 // Logo: coloque um arquivo quadrado chamado logo.png na mesma pasta do index.html.
 var LOGO_SRC = "logo.png";
 var CSV_URL = "catalogo.csv";
