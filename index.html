@@ -103,6 +103,22 @@ main{margin-left:312px;padding:40px 44px 64px;max-width:1280px}
 .lframe{flex:1;width:100%;border:0;background:var(--panel);display:block}
 .lframe[hidden]{display:none}
 
+/* Anúncios */
+.ad{display:block;margin:18px 0}
+.ad-rot{display:block;font:600 .625rem/1 var(--display);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:5px}
+.ad-box{display:flex;align-items:center;justify-content:center;text-align:center;min-height:90px;padding:8px;border:1.5px dashed var(--ink);background:repeating-linear-gradient(135deg,transparent 0 10px,rgba(255,212,0,.22) 10px 20px);color:var(--muted);font:500 .8125rem var(--body)}
+.ad-grade .ad-box{min-height:120px}
+.grid>.ad{grid-column:1/-1;margin:2px 0}
+.ad-leitor{margin:0;padding:6px 16px 8px;background:var(--panel);border-bottom:1px solid var(--line)}
+.ad-leitor .ad-box{min-height:50px}
+.lcorpo{flex:1;display:flex;min-height:0}
+.lmain{flex:1;min-width:0;display:flex;flex-direction:column}
+.lateral{display:none;width:328px;flex:none;padding:12px 14px;border-left:1px solid var(--line);background:var(--panel);overflow:auto}
+.lateral .ad{margin:0}
+.lateral .ad-box{min-height:600px}
+@media (min-width:861px){.ad-leitor .ad-box{min-height:90px}}
+@media (min-width:1180px){.lateral{display:block}}
+
 /* Mobile */
 .fab,.scrim{display:none}
 @media (max-width:860px){
@@ -143,8 +159,14 @@ main{margin-left:312px;padding:40px 44px 64px;max-width:1280px}
       <a id="lopen" target="_blank" rel="noopener" hidden>Abrir PDF</a>
     </div>
   </header>
-  <p class="lmsg" id="lmsg"></p>
-  <iframe class="lframe" id="lframe" title="Leitura do PDF" hidden allow="fullscreen"></iframe>
+  <div data-ad="leitor" data-fmt="728×90"></div>
+  <div class="lcorpo">
+    <div class="lmain">
+      <p class="lmsg" id="lmsg"></p>
+      <iframe class="lframe" id="lframe" title="Leitura do PDF" hidden allow="fullscreen"></iframe>
+    </div>
+    <aside class="lateral" data-ad="lateral" data-fmt="300×600" aria-label="Publicidade"></aside>
+  </div>
 </section>
 
 <button class="scrim" id="scrim" type="button" aria-label="Fechar filtros"></button>
@@ -165,12 +187,40 @@ main{margin-left:312px;padding:40px 44px 64px;max-width:1280px}
       </select>
     </label>
   </div>
+  <div data-ad="topo" data-fmt="728×90"></div>
   <section class="grid" id="grid" aria-label="Quadrinhos"></section>
   <div class="fim" id="fim"><p id="fimtxt" aria-live="polite"></p><button type="button" class="mais" id="mais">Carregar mais</button></div>
+  <div data-ad="rodape" data-fmt="728×90"></div>
 </main>
 
 <script>
 var CSV_URL = "catalogo.csv";
+
+// Anúncios. Com ativo:false aparecem só os espaços reservados.
+// Para usar o Google AdSense: ativo:true, seu código em client (ca-pub-...) e o número de cada bloco em slots.
+var ADS = {ativo:false, client:"ca-pub-0000000000000000", slots:{topo:"",grade:"",rodape:"",leitor:"",lateral:""}};
+function anuncio(nome,fmt){
+  var rot='<span class="ad-rot">Publicidade</span>';
+  if(ADS.ativo && ADS.slots[nome])
+    return '<div class="ad ad-'+nome+'">'+rot+'<ins class="adsbygoogle" style="display:block" data-ad-client="'+ADS.client+'" data-ad-slot="'+ADS.slots[nome]+'" data-ad-format="auto" data-full-width-responsive="true"></ins></div>';
+  return '<div class="ad ad-'+nome+'">'+rot+'<div class="ad-box">Espaço publicitário · '+fmt+'</div></div>';
+}
+function ativaAds(){
+  if(!ADS.ativo) return;
+  document.querySelectorAll("ins.adsbygoogle:not([data-done])").forEach(function(el){
+    if(!el.offsetWidth) return;
+    el.setAttribute("data-done","1");
+    try{(window.adsbygoogle=window.adsbygoogle||[]).push({});}catch(e){}
+  });
+}
+function montaAds(){
+  document.querySelectorAll("[data-ad]").forEach(function(e){e.innerHTML=anuncio(e.dataset.ad,e.dataset.fmt);});
+  if(ADS.ativo){
+    var sc=document.createElement("script"); sc.async=true; sc.crossOrigin="anonymous";
+    sc.src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client="+ADS.client;
+    document.head.appendChild(sc);
+  }
+}
 
 var ITENS = [];
 var GRUPOS = [
@@ -251,6 +301,14 @@ function cartao(f,i){
     '<p class="meta"><b>'+esc(nome)+'</b><span>'+linhas.join("<br>")+'</span></p>'+
   '</a>';
 }
+function lista(a,b){
+  var h="";
+  for(var i=a;i<b;i++){
+    h+=cartao(atual[i],i-a);
+    if((i+1)%8===0 && i+1<atual.length) h+=anuncio("grade","responsivo");
+  }
+  return h;
+}
 function statusFim(){
   var n = atual.length;
   $("fimtxt").textContent = n ? "Mostrando "+vis+" de "+n : "";
@@ -274,17 +332,18 @@ function renderiza(){
     g.innerHTML = '<div class="empty">Nenhum quadrinho combina com esses filtros.<br><button type="button" id="limpa2">Limpar filtros</button></div>';
     $("limpa2").onclick = limpa;
   } else {
-    g.innerHTML = atual.slice(0,vis).map(cartao).join("");
+    g.innerHTML = lista(0,vis);
   }
   statusFim();
   atualizaMenu();
+  ativaAds();
   if(obs){obs.unobserve($("fim"));obs.observe($("fim"));}
 }
 function carrega(){
   if(vis>=atual.length) return;
   var ini = vis; vis = Math.min(vis+LOTE,atual.length);
-  $("grid").insertAdjacentHTML("beforeend", atual.slice(ini,vis).map(cartao).join(""));
-  statusFim();
+  $("grid").insertAdjacentHTML("beforeend", lista(ini,vis));
+  statusFim(); ativaAds();
   if(obs){obs.unobserve($("fim"));obs.observe($("fim"));}
 }
 
@@ -330,7 +389,7 @@ function abreLeitor(f){
   if($("leitor").hidden) savedY=window.scrollY;
   cur=f; $("leitor").hidden=false; document.body.style.overflow="hidden"; dentro(true);
   $("ltit").textContent=(f.s?f.t+": "+f.s:f.t); $("lsub").textContent=[f.r,f.e,f.a||""].filter(Boolean).join(" · ");
-  $("lback").focus(); carregaPdf(f);
+  $("lback").focus(); carregaPdf(f); ativaAds();
 }
 function fechaLeitor(){
   if($("leitor").hidden) return;
@@ -395,6 +454,7 @@ function carregaItens(txt){
   return out;
 }
 function erro(t){$("count").textContent="Não foi possível carregar o catálogo";$("desc").textContent=t;$("grid").innerHTML="";}
+montaAds(); ativaAds();
 $("count").textContent="Carregando…";
 fetch(CSV_URL,{cache:"no-cache"}).then(function(r){ if(!r.ok) throw new Error("http "+r.status); return r.text(); })
 .then(function(txt){

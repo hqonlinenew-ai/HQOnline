@@ -64,3 +64,15 @@ Limites do iframe:
 ## Atualizar
 
 Edite o `catalogo.csv` no GitHub (ícone de lápis), ou envie uma versão nova exportada da planilha (Arquivo > Fazer download > CSV). A página mostra a mudança em alguns minutos, o tempo do cache do GitHub Pages.
+
+## Anúncios
+
+A página tem espaços reservados para anúncios: um banner acima da lista, um entre os quadrinhos a cada 8 títulos, um no rodapé, um banner no topo do leitor e uma coluna lateral no leitor (só em telas largas). Todos aparecem com o rótulo "Publicidade".
+
+Para ligar o Google AdSense, edite no começo do script do `index.html`:
+
+```js
+var ADS = {ativo:true, client:"ca-pub-SEU-CODIGO", slots:{topo:"111", grade:"222", rodape:"333", leitor:"444", lateral:"555"}};
+```
+
+Cada número em `slots` é o ID de um bloco criado no painel do AdSense. Um bloco com número vazio continua mostrando o espaço reservado. O AdSense também pede um arquivo `ads.txt` na raiz do repositório e a aprovação do site.
