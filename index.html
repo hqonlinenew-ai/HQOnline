@@ -252,7 +252,7 @@ function cartao(f,i){
   if(f.r) linhas.push(esc(f.r));
   var ee = [f.e, f.a||""].filter(Boolean).join(" · "); if(ee) linhas.push(esc(ee));
   if(f.p) linhas.push("Postado em "+fmt(f.p));
-  return '<a class="card" href="#ler-'+f.id+'" aria-label="Ler '+esc(nome)+'" style="animation-delay:'+Math.min(i,12)*14+'ms">'+
+  return '<a class="card" href="#ler-'+f.id+'" target="_blank" rel="noopener" aria-label="Ler '+esc(nome)+'" style="animation-delay:'+Math.min(i,12)*14+'ms">'+
     '<div class="cover m'+f.m+'" style="background:'+f.c+';color:'+f.f+'">'+img+
       (f.e?'<span class="ed">'+esc(f.e)+'</span>':'<span></span>')+
       '<div><h2 class="ct">'+esc(f.t)+'</h2>'+(f.s?'<p class="cs">'+esc(f.s)+'</p>':'')+'</div>'+
