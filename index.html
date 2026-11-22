@@ -3,458 +3,327 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Catálogo de quadrinhos</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8655690012436378"
-     crossorigin="anonymous"></script>
+<title>Catálogo de revistas de modelismo</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#F2F3F5; --panel:#FFFFFF; --ink:#0B0B0F; --muted:#575C68; --line:#D3D6DC; --accent:#FFD400;
-  --display:"Chakra Petch","Arial Narrow",system-ui,sans-serif; --body:"Instrument Sans",system-ui,sans-serif;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  --bg:#e9eef2; --panel:#f7f9fb; --ink:#14213d; --muted:#56637e; --line:#c9d3de; --accent:#2b4bff; --accent-ink:#fff;
+  --head:"Bricolage Grotesque","Trebuchet MS",sans-serif; --body:"Instrument Sans","Segoe UI",sans-serif;
   color-scheme:light;
-  box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
 }
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){--bg:#0f1624;--panel:#18223a;--ink:#e8edf7;--muted:#9aa8c4;--line:#2b3957;--accent:#7f95ff;--accent-ink:#0f1624;color-scheme:dark}
+}
+:root[data-theme="dark"]{--bg:#0f1624;--panel:#18223a;--ink:#e8edf7;--muted:#9aa8c4;--line:#2b3957;--accent:#7f95ff;--accent-ink:#0f1624;color-scheme:dark}
+*,*::before,*::after{box-sizing:inherit}
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
-*{box-sizing:border-box}
-body{margin:0;background-color:var(--bg);background-image:linear-gradient(rgba(11,11,15,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(11,11,15,.05) 1px,transparent 1px);background-size:28px 28px;color:var(--ink);font:400 1rem/1.5 var(--body)}
-button,input,select,summary{font:inherit;color:inherit}
-:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
-
-/* Logo + nome, canto superior esquerdo */
-.brandbar{position:fixed;z-index:21;left:16px;top:calc(16px + env(safe-area-inset-top,0px));width:280px;height:64px;display:flex;align-items:center;gap:14px}
-.logo{flex:none;width:64px;height:64px;border:2px solid var(--ink);border-radius:4px;background:var(--ink);display:grid;place-items:center;overflow:hidden;padding:0;box-shadow:4px 4px 0 var(--accent)}
-.logo img{width:100%;height:100%;object-fit:contain;display:block}
-.brand{font:700 1.1rem/1.05 var(--display);letter-spacing:.06em;text-transform:uppercase;margin:0}
-
-/* Menu lateral suspenso */
-.menu{position:fixed;z-index:20;left:16px;top:calc(96px + env(safe-area-inset-top,0px));bottom:calc(22px + env(safe-area-inset-bottom,0px));width:280px;
-  background:var(--panel);border:2px solid var(--ink);border-radius:6px;box-shadow:6px 6px 0 var(--accent);
-  display:flex;flex-direction:column;overflow:hidden}
-.menu .scroll{overflow-y:auto;padding:18px;flex:1}
-.search{width:100%;padding:10px 12px;border:1.5px solid var(--ink);border-radius:2px;background:var(--bg)}
-.grp{border-top:1px solid var(--line);margin-top:14px}
-.grp:first-of-type{margin-top:16px}
-.grp summary{list-style:none;display:flex;justify-content:space-between;align-items:center;gap:8px;padding:12px 4px 8px;cursor:pointer;font:700 .8125rem/1.2 var(--display);letter-spacing:.1em;text-transform:uppercase}
-.grp summary::-webkit-details-marker{display:none}
-.grp summary::after{content:"";width:8px;height:8px;border-right:2px solid var(--ink);border-bottom:2px solid var(--ink);transform:rotate(45deg);margin:-4px 4px 0 auto;transition:transform .15s}
-.grp[open] summary::after{transform:rotate(-135deg);margin-top:4px}
-.badge{font:700 .75rem/1.4 var(--display);min-width:20px;padding:0 6px;border:1.5px solid var(--ink);border-radius:2px;background:var(--accent);color:var(--ink);text-align:center}
-.badge:empty{display:none}
-.list{list-style:none;margin:0;padding:0 0 6px;display:grid;gap:2px;max-height:240px;overflow-y:auto}
-.opt{width:100%;display:flex;justify-content:space-between;align-items:center;gap:8px;padding:7px 10px;border:0;border-radius:2px;background:none;text-align:left;cursor:pointer;font-size:.9375rem}
-.opt:hover{background:var(--bg)}
-.opt[aria-pressed="true"]{background:var(--accent);color:var(--ink);font-weight:600;box-shadow:inset 4px 0 0 var(--ink)}
-.opt .n{font-size:.8125rem;color:var(--muted);font-variant-numeric:tabular-nums}
-.opt[aria-pressed="true"] .n{color:var(--ink)}
-.zero:not([aria-pressed="true"]){opacity:.4}
-.chips{display:flex;flex-wrap:wrap;gap:6px;padding:0 0 8px}
-.chip{padding:5px 10px;border:1.5px solid var(--line);border-radius:2px;background:none;cursor:pointer;font-size:.875rem;font-variant-numeric:tabular-nums}
-.chip:hover{border-color:var(--ink)}
-.chip[aria-pressed="true"]{background:var(--accent);color:var(--ink);border-color:var(--ink);font-weight:600}
-.reset{margin-top:18px;width:100%;padding:10px;border:1.5px solid var(--ink);border-radius:2px;background:none;cursor:pointer;font:600 .8125rem var(--display);letter-spacing:.08em;text-transform:uppercase}
-.reset:hover{background:var(--accent)}
-
-/* Área principal */
-main{margin-left:312px;padding:40px 44px 64px;max-width:1280px}
-.top{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap;margin-bottom:34px}
-.count{display:inline-block;font:700 clamp(2.25rem,5.5vw,4.25rem)/1.05 var(--display);letter-spacing:-.005em;text-transform:uppercase;margin:0;padding-right:.2em;background:linear-gradient(transparent 62%,var(--accent) 62%)}
-.desc{margin:12px 0 0;color:var(--muted);max-width:60ch}
-.sort{display:flex;align-items:center;gap:8px;font:600 .75rem var(--display);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
-.sort select{padding:8px 10px;border:1.5px solid var(--ink);border-radius:2px;background:var(--panel);font:500 .875rem var(--body);letter-spacing:0;text-transform:none;color:var(--ink)}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:32px 26px}
-.card{display:block;color:inherit;text-decoration:none;border-radius:6px;animation:in .22s ease-out both}
-@keyframes in{from{opacity:0;transform:scale(.97)}to{opacity:1;transform:none}}
-.card:hover .meta b{text-decoration:underline}
-.cover{position:relative;aspect-ratio:2/3;border:2px solid var(--ink);border-radius:3px;overflow:hidden;padding:14px;display:flex;flex-direction:column;justify-content:space-between;box-shadow:5px 5px 0 var(--accent);transition:transform .15s,box-shadow .15s}
-.card:hover .cover,.card:focus-visible .cover{transform:translate(-2px,-2px);box-shadow:8px 8px 0 var(--accent)}
-.cover::before{content:"";position:absolute;inset:0;pointer-events:none;background:currentColor;opacity:.16}
-.m0::before{background:radial-gradient(currentColor 24%,transparent 26%) 0 0/9px 9px;opacity:.25;-webkit-mask-image:linear-gradient(160deg,transparent 30%,#000);mask-image:linear-gradient(160deg,transparent 30%,#000)}
-.m1::before{background:repeating-linear-gradient(135deg,currentColor 0 8px,transparent 8px 22px);opacity:.14}
-.m2::before{clip-path:polygon(50% 8%,60% 32%,88% 22%,72% 46%,96% 60%,66% 64%,64% 92%,50% 70%,34% 92%,34% 64%,4% 60%,28% 46%,12% 22%,40% 32%)}
-.m3::before{clip-path:polygon(0 0,58% 0,38% 100%,0 100%)}
-.cover>*{position:relative}
-.cover>iframe{position:absolute;inset:0;width:100%;height:100%;border:0;pointer-events:none;z-index:1;background:#fff}
-.cover>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1}
-.ed{align-self:flex-start;font:700 .6875rem/1 var(--display);letter-spacing:.08em;text-transform:uppercase;padding:5px 7px;border:1.5px solid currentColor;border-radius:2px}
-.ct{font:700 1.45rem/1.02 var(--display);letter-spacing:-.01em;margin:0;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere}
-.cs{margin:6px 0 0;font:500 .9375rem/1.2 var(--body);opacity:.9}
-.meta{margin:14px 2px 0;font-size:.875rem;line-height:1.35}
-.meta b{display:block;font-weight:600}
-.meta span{color:var(--muted)}
-.fim{margin-top:40px;text-align:center;color:var(--muted);font-size:.875rem}
-.mais{margin-top:8px;padding:10px 18px;border:1.5px solid var(--ink);border-radius:2px;background:none;cursor:pointer;font:600 .8125rem var(--display);letter-spacing:.08em;text-transform:uppercase;color:var(--ink)}
-.mais:hover{background:var(--accent)}
-.empty{grid-column:1/-1;padding:48px 0;color:var(--muted)}
-.empty button{margin-top:12px;padding:10px 16px;border:2px solid var(--ink);border-radius:2px;background:var(--accent);color:var(--ink);cursor:pointer;font:600 .8125rem var(--display);letter-spacing:.08em;text-transform:uppercase}
-
-/* Leitor */
-.leitor{position:fixed;inset:0;z-index:40;background:var(--bg);display:flex;flex-direction:column;padding-top:env(safe-area-inset-top,0px)}
-.leitor[hidden]{display:none}
-.lbar{display:flex;align-items:center;gap:12px;padding:10px 16px;background:var(--ink);color:#fff;border-bottom:4px solid var(--accent);flex-wrap:wrap}
-.lbar button,.lbar a{padding:8px 12px;border:1.5px solid var(--accent);border-radius:2px;background:none;color:var(--accent);cursor:pointer;font:600 .8125rem var(--display);letter-spacing:.08em;text-transform:uppercase;text-decoration:none}
-.lbar button:hover,.lbar a:hover{background:var(--accent);color:var(--ink)}
-.lbar :focus-visible{outline-color:var(--accent)}
-.ltit{flex:1;min-width:160px;display:flex;flex-direction:column;line-height:1.25}
-.ltit b{font:700 1.1rem/1.1 var(--display);color:#fff}
-.ltit span{color:#B8BCC6;font-size:.8125rem}
-.ltools{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.lmsg{text-align:center;color:var(--muted);padding:48px 16px;margin:0}
-.lmsg:empty{display:none}
-.lframe{flex:1;width:100%;border:0;background:var(--panel);display:block}
-.lframe[hidden]{display:none}
-
-/* Anúncios */
-.ad{display:block;margin:18px 0}
-.ad-rot{display:block;font:600 .625rem/1 var(--display);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:5px}
-.grid>.ad{grid-column:1/-1;margin:2px 0}
-.ad-leitor{margin:0;padding:6px 16px 8px;background:var(--panel);border-bottom:1px solid var(--line)}
-.lcorpo{flex:1;display:flex;min-height:0}
-.lmain{flex:1;min-width:0;display:flex;flex-direction:column}
-.lateral{display:none;width:328px;flex:none;padding:12px 14px;border-left:1px solid var(--line);background:var(--panel);overflow:auto}
-.lateral .ad{margin:0}
-@media (min-width:1180px){.lateral{display:block}}
-.lateral:empty{display:none!important}
-.ad:has(ins[data-ad-status="unfilled"]){display:none}
-
-/* Mobile */
-.fab,.scrim{display:none}
-@media (max-width:860px){
-  .brandbar{position:absolute;left:18px;top:calc(16px + env(safe-area-inset-top,0px))}
-  main{margin-left:0;padding:108px 20px 110px}
-  .menu{left:12px;right:18px;width:auto;top:auto;max-height:78vh;bottom:calc(18px + env(safe-area-inset-bottom,0px));transform:translateY(calc(100% + 40px));transition:transform .25s ease;visibility:hidden}
-  .menu.open{transform:none;visibility:visible}
-  .fab{display:inline-flex;position:fixed;z-index:15;left:50%;transform:translateX(-50%);bottom:calc(22px + env(safe-area-inset-bottom,0px));padding:12px 22px;border:2px solid var(--ink);border-radius:4px;background:var(--accent);color:var(--ink);font:700 .875rem var(--display);letter-spacing:.08em;text-transform:uppercase;cursor:pointer;box-shadow:4px 4px 0 var(--ink)}
-  .scrim{position:fixed;inset:0;z-index:19;background:rgba(10,10,15,.5);border:0}
-  .scrim.show{display:block}
-  .grid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:26px 20px}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.5 var(--body)}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+header{padding:28px clamp(16px,4vw,48px) 8px}
+h1{font:800 clamp(2rem,5vw,3.4rem)/1 var(--head);margin:0;letter-spacing:-.02em}
+header p{margin:8px 0 0;color:var(--muted);max-width:60ch}
+.layout{display:grid;grid-template-columns:270px 1fr;gap:28px;padding:20px clamp(16px,4vw,48px) 48px;align-items:start}
+aside{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px;position:sticky;top:16px}
+aside h2{font:700 1.05rem var(--head);margin:0 0 12px}
+fieldset{border:0;padding:0;margin:0 0 18px}
+legend{font:600 .9rem var(--body);padding:0;margin-bottom:8px}
+label.chk{display:flex;align-items:center;gap:8px;padding:4px 0;cursor:pointer;font-size:.95rem}
+label.chk input{accent-color:var(--accent);width:16px;height:16px}
+label.chk .n{margin-left:auto;color:var(--muted);font-size:.8rem}
+input[type=search],select{width:100%;padding:9px 10px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--ink);font:inherit}
+button,.btn{font:600 .9rem var(--body);cursor:pointer;border-radius:8px;padding:9px 12px;border:1px solid var(--line);background:transparent;color:var(--ink);text-decoration:none;display:inline-block}
+button.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.csvbox{border-top:1px solid var(--line);padding-top:14px;margin-top:14px;font-size:.85rem;color:var(--muted)}
+.csvbox input{display:none}
+.csvbox label{margin-top:6px}
+#msg{margin:8px 0 0;font-size:.85rem}
+.toggle{display:none;width:100%;margin-bottom:12px}
+.bar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{background:var(--accent);color:var(--accent-ink);border:0;border-radius:99px;padding:4px 10px;font-size:.8rem}
+#count{font:700 1.1rem var(--head)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:18px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;padding:0;text-align:left;color:inherit;font:inherit;width:100%}
+.card:hover{border-color:var(--accent)}
+.poster{position:relative;overflow:hidden;aspect-ratio:2/3;padding:14px;display:flex;flex-direction:column;justify-content:space-between;color:#fff;background:linear-gradient(160deg,var(--c1),var(--c2))}
+.poster b{font:800 1.5rem/1.05 var(--head);letter-spacing:-.01em;overflow-wrap:anywhere}
+.poster span{font:500 .8rem var(--body);opacity:.9}
+.poster iframe{position:absolute;inset:0;width:100%;height:100%;border:0;pointer-events:none;background:#fff}
+.poster .score,.poster .t{position:relative;z-index:1}
+.poster.hascover .t{display:none}
+.score{align-self:flex-end;background:rgba(0,0,0,.55);border-radius:6px;padding:2px 8px;font:700 .95rem var(--head)}
+.info{padding:12px 14px 14px;font-size:.88rem}
+.info h3{font:700 1rem var(--head);margin:0}
+.info p{margin:2px 0 0;color:var(--muted)}
+.empty{grid-column:1/-1;padding:40px;text-align:center;background:var(--panel);border:1px dashed var(--line);border-radius:12px}
+.reader{position:fixed;inset:0;z-index:50;background:var(--bg);display:flex;flex-direction:column;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+.reader[hidden]{display:none}
+.rbar{display:flex;align-items:center;gap:12px;padding:10px clamp(12px,3vw,28px);border-bottom:1px solid var(--line);background:var(--panel);flex-wrap:wrap}
+.rbar strong{font:800 1.2rem var(--head)}
+.rbar .meta{color:var(--muted);font-size:.85rem;flex:1;min-width:140px}
+.rframe{flex:1;border:0;width:100%;background:#fff}
+.rnote{margin:0;padding:8px clamp(12px,3vw,28px);font-size:.85rem;color:var(--muted);border-top:1px solid var(--line)}
+@media (max-width:760px){
+  .layout{grid-template-columns:1fr}
+  aside{position:static;display:none}
+  aside.open{display:block}
+  .toggle{display:block}
 }
-@media (prefers-reduced-motion:reduce){.card{animation:none}.menu{transition:none}.cover{transition:none}}
+@media (prefers-reduced-motion:no-preference){.card{transition:border-color .15s}}
 </style>
 </head>
 <body>
+<header>
+  <h1>Revistas de modelismo</h1>
+  <p>Filtre por categoria, país e década. Clique em uma revista para ler o PDF.</p>
+</header>
 
-<div class="brandbar">
-  <div class="logo has" id="logo" role="img" aria-label="Logo">
-    <img src="https://raw.githubusercontent.com/hqonlinenew-ai/HQOnline/refs/heads/main/Logo%20Futurista%20Amarelo%20ONLINE.png" alt="">
+<div class="layout">
+  <div class="side-wrap">
+    <button class="toggle" id="toggle" aria-expanded="false" aria-controls="filters">Mostrar filtros</button>
+    <aside id="filters" aria-label="Filtros">
+      <h2>Filtros</h2>
+      <fieldset>
+        <legend>Buscar</legend>
+        <input type="search" id="q" placeholder="Título da revista" aria-label="Buscar por título">
+      </fieldset>
+      <fieldset id="genres"><legend>Categoria</legend></fieldset>
+      <fieldset>
+        <legend>País</legend>
+        <select id="country" aria-label="País"></select>
+      </fieldset>
+      <fieldset>
+        <legend>Década</legend>
+        <select id="decade" aria-label="Década"></select>
+      </fieldset>
+      <fieldset>
+        <legend>Ordenar por</legend>
+        <select id="sort" aria-label="Ordenar por">
+          <option value="pub">Publicação mais recente</option>
+          <option value="year-desc">Ano mais recente</option>
+          <option value="year-asc">Ano mais antigo</option>
+          <option value="title">Título (A–Z)</option>
+        </select>
+      </fieldset>
+      <button id="clear">Limpar filtros</button>
+      <div class="csvbox">
+        Os dados vêm do arquivo revistas.csv (colunas: titulo, ano, pais, sigla, categorias separadas por ;, data_publicacao em AAAA-MM-DD, capa_url, pdf_url).
+        <label class="btn" for="csvfile">Carregar outro CSV</label>
+        <input type="file" id="csvfile" accept=".csv,text/csv">
+        <p id="msg" role="status"></p>
+      </div>
+    </aside>
   </div>
-  <p class="brand">Catálogo de quadrinhos</p>
+
+  <main>
+    <div class="bar">
+      <span id="count" aria-live="polite"></span>
+      <div class="chips" id="chips"></div>
+    </div>
+    <div class="grid" id="grid"></div>
+  </main>
 </div>
 
-<aside class="menu" id="menu" aria-label="Filtros do catálogo">
-  <div class="scroll">
-    <input class="search" id="q" type="search" placeholder="Buscar título, subtítulo ou arco" aria-label="Buscar" autocomplete="off">
-    <div id="grupos"></div>
-    <button class="reset" id="reset" type="button">Limpar filtros</button>
+<div class="reader" id="reader" hidden role="dialog" aria-modal="true" aria-labelledby="rTitle">
+  <div class="rbar">
+    <strong id="rTitle"></strong>
+    <span class="meta" id="rMeta"></span>
+    <a class="btn" id="rOpen" target="_blank" rel="noopener noreferrer">Abrir em nova aba</a>
+    <button class="primary" id="rClose">Fechar</button>
   </div>
-</aside>
+  <iframe class="rframe" id="rFrame" title="Leitor de PDF"></iframe>
+  <p class="rnote" id="rNote">Se o PDF não aparecer aqui, use “Abrir em nova aba”: alguns sites não permitem exibição dentro de outra página.</p>
+</div>
 
-<section class="leitor" id="leitor" hidden aria-label="Leitor de PDF">
-  <header class="lbar">
-    <button type="button" id="lback">Voltar ao catálogo</button>
-    <div class="ltit"><b id="ltit"></b><span id="lsub"></span></div>
-    <div class="ltools">
-      <a id="lopen" target="_blank" rel="noopener" hidden>Abrir PDF</a>
-    </div>
-  </header>
-  <div data-ad="leitor"></div>
-  <div class="lcorpo">
-    <div class="lmain">
-      <p class="lmsg" id="lmsg"></p>
-      <iframe class="lframe" id="lframe" title="Leitura do PDF" hidden allow="fullscreen"></iframe>
-    </div>
-    <aside class="lateral" data-ad="lateral" aria-label="Publicidade"></aside>
-  </div>
-</section>
-
-<button class="scrim" id="scrim" type="button" aria-label="Fechar filtros"></button>
-<button class="fab" id="fab" type="button" aria-controls="menu" aria-expanded="false">Filtros</button>
-
-<main>
-  <div class="top">
-    <div>
-      <h1 class="count" id="count" aria-live="polite"></h1>
-      <p class="desc" id="desc"></p>
-    </div>
-    <label class="sort">Ordenar por
-      <select id="sort">
-        <option value="post">Postados recentemente</option>
-        <option value="novo">Ano (mais novos)</option>
-        <option value="antigo">Ano (mais antigos)</option>
-        <option value="az">Título (A–Z)</option>
-      </select>
-    </label>
-  </div>
-  <div data-ad="topo"></div>
-  <section class="grid" id="grid" aria-label="Quadrinhos"></section>
-  <div class="fim" id="fim"><p id="fimtxt" aria-live="polite"></p><button type="button" class="mais" id="mais">Carregar mais</button></div>
-  <div data-ad="rodape"></div>
-</main>
+<!-- Cópia de reserva do revistas.csv: só é usada quando o navegador não consegue ler o arquivo (ex.: index.html aberto com duplo clique). -->
+<script type="text/csv" id="csv-reserva">titulo,ano,pais,sigla,categorias,data_publicacao,capa_url,pdf_url
+Model Railroader,1934,EUA,US,Ferromodelismo,2026-10-01,,https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf
+Railway Modeller,1949,Reino Unido,UK,Ferromodelismo,2026-10-01,,https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf
+MIBA,1948,Alemanha,DE,Ferromodelismo,2026-09-01,,https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf
+Model Engineer,1898,Reino Unido,UK,Vapor vivo;Ferromodelismo,2026-10-15,,https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf
+Aeromodeller,1935,Reino Unido,UK,Aeromodelismo,2026-10-01,,https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf
+Model Airplane News,1929,EUA,US,Aeromodelismo,2026-10-01,,https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf
+Model Aviation,1975,EUA,US,Aeromodelismo,2026-10-01,,https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf
+Model Boats,1950,Reino Unido,UK,Nautimodelismo,2026-10-01,,https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf
+Ships in Scale,1982,EUA,US,Nautimodelismo;Plastimodelismo,2026-09-01,,https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf
+FineScale Modeler,1982,EUA,US,Plastimodelismo;Militar,2026-10-01,,https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf
+Scale Aircraft Modelling,1978,Reino Unido,UK,Plastimodelismo;Aeromodelismo,2026-09-01,,https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf
+Military Modelling,1971,Reino Unido,UK,Militar;Plastimodelismo,2026-08-01,,https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf
+Model Art,1966,Japão,JP,Plastimodelismo;Militar,2026-10-01,,https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf
+Hobby Japan,1969,Japão,JP,Plastimodelismo,2026-10-01,,https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf
+Scale Auto,1978,EUA,US,Automodelismo,2026-09-01,,https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf
+RC Car Action,1990,EUA,US,Automodelismo,2026-10-01,,https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf
+Modell Fan,1970,Alemanha,DE,Aeromodelismo;Nautimodelismo,2026-10-01,,https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf
+</script>
 
 <script>
-var CSV_URL = "catalogo.csv";
+const $=id=>document.getElementById(id);
+let films=[];
+const state={genres:new Set(),decade:"",country:"",q:"",sort:"pub"};
 
-// Google AdSense. O código geral fica no <head>. Para exibir anúncios nos espaços da página,
-// cole em slots o número de cada bloco criado no painel do AdSense; espaço sem número não aparece.
-var ADS = {client:"ca-pub-8655690012436378", slots:{topo:"",grade:"",rodape:"",leitor:"",lateral:""}};
-function anuncio(nome){
-  if(!ADS.slots[nome]) return "";
-  return '<div class="ad ad-'+nome+'"><span class="ad-rot">Publicidade</span><ins class="adsbygoogle" style="display:block" data-ad-client="'+ADS.client+'" data-ad-slot="'+ADS.slots[nome]+'" data-ad-format="auto" data-full-width-responsive="true"></ins></div>';
-}
-function ativaAds(){
-  document.querySelectorAll("ins.adsbygoogle:not([data-done])").forEach(function(el){
-    if(!el.offsetWidth) return;
-    el.setAttribute("data-done","1");
-    try{(window.adsbygoogle=window.adsbygoogle||[]).push({});}catch(e){}
-  });
-}
-function montaAds(){
-  document.querySelectorAll("[data-ad]").forEach(function(e){e.innerHTML=anuncio(e.dataset.ad);});
-}
-
-var ITENS = [];
-var GRUPOS = [
- {k:"a",nome:"Ano",chips:true,aberto:false},
- {k:"t",nome:"Título",aberto:true},
- {k:"s",nome:"Subtítulo",aberto:false},
- {k:"r",nome:"Arcos",aberto:false},
- {k:"e",nome:"Editoras",aberto:true}
-];
-var $ = function(id){return document.getElementById(id)};
-function norm(s){return s.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();}
-function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;");}
-
-var st = {q:"",sort:"post",sel:{a:[],t:[],s:[],r:[],e:[]}};
-
-function passa(f, ignora){
-  for(var i=0;i<GRUPOS.length;i++){
-    var k=GRUPOS[i].k;
-    if(k!==ignora && st.sel[k].length && st.sel[k].indexOf(String(f[k]))<0) return false;
+/* ---------- CSV ---------- */
+function parseCSV(text){
+  const rows=[];let row=[],cur="",inQ=false;
+  text=text.replace(/^\uFEFF/,"");
+  for(let i=0;i<text.length;i++){
+    const c=text[i];
+    if(inQ){
+      if(c==='"'){ if(text[i+1]==='"'){cur+='"';i++} else inQ=false }
+      else cur+=c;
+    }else if(c==='"') inQ=true;
+    else if(c===","){row.push(cur);cur=""}
+    else if(c==="\n"||c==="\r"){
+      if(c==="\r"&&text[i+1]==="\n")i++;
+      row.push(cur);cur="";
+      if(row.some(v=>v.trim()!==""))rows.push(row);
+      row=[];
+    }else cur+=c;
   }
-  if(st.q && norm(f.t+" "+f.s+" "+f.r).indexOf(norm(st.q))<0) return false;
-  return true;
-}
-
-function montaGrupos(){
-  var html = GRUPOS.map(function(g){
-    var vals = ITENS.map(function(f){return String(f[g.k])}).filter(function(v,i,a){return v&&v!=="0"&&a.indexOf(v)===i});
-    vals.sort(g.k==="a" ? function(a,b){return b-a} : function(a,b){return a.localeCompare(b,"pt-BR")});
-    var corpo = g.chips
-      ? '<div class="chips">'+vals.map(function(v){return '<button type="button" class="chip" data-k="'+g.k+'" data-v="'+esc(v)+'" aria-pressed="false">'+v+'</button>'}).join("")+'</div>'
-      : '<ul class="list">'+vals.map(function(v){return '<li><button type="button" class="opt" data-k="'+g.k+'" data-v="'+esc(v)+'" aria-pressed="false"><span>'+esc(v)+'</span><span class="n"></span></button></li>'}).join("")+'</ul>';
-    return '<details class="grp"'+(g.aberto?" open":"")+'><summary><span>'+g.nome+'</span><span class="badge" data-b="'+g.k+'"></span></summary>'+corpo+'</details>';
-  }).join("");
-  $("grupos").innerHTML = html;
-}
-
-function atualizaMenu(){
-  document.querySelectorAll("[data-k][data-v]").forEach(function(b){
-    var k=b.dataset.k, v=b.dataset.v;
-    var n = ITENS.filter(function(f){return passa(f,k) && String(f[k])===v}).length;
-    b.setAttribute("aria-pressed", String(st.sel[k].indexOf(v)>=0));
-    b.classList.toggle("zero", n===0);
-    var c = b.querySelector(".n"); if(c) c.textContent = n;
-    if(!c) b.title = n+(n===1?" item":" itens");
-  });
-  GRUPOS.forEach(function(g){
-    var n = st.sel[g.k].length;
-    document.querySelector('[data-b="'+g.k+'"]').textContent = n || "";
-  });
-}
-
-function ativos(){
-  return GRUPOS.reduce(function(s,g){return s+st.sel[g.k].length},0)+(st.q?1:0);
-}
-function descricao(){
-  var p=[];
-  GRUPOS.forEach(function(g){ if(st.sel[g.k].length) p.push(g.nome+": "+st.sel[g.k].join(", ")); });
-  if(st.q) p.push("busca “"+st.q+"”");
-  return p.length ? "Filtros ativos. "+p.join("; ")+"." : "Sem filtros."+(st.sort==="post"?" Os últimos títulos postados vêm primeiro; role a página para carregar mais.":"");
-}
-
-var LOTE = 8, atual = [], vis = 0, obs = null;
-function fmt(p){return p?p.slice(8,10)+"/"+p.slice(5,7)+"/"+p.slice(0,4):"";}
-function cartao(f,i){
-  var img = !f.capa ? "" : ehImagem(f.capa)
-    ? '<img src="'+esc(f.capa)+'" alt="" loading="lazy" onerror="this.remove()">'
-    : '<iframe src="'+esc(capaEmbed(f.capa))+'" title="" tabindex="-1" aria-hidden="true" loading="lazy" scrolling="no"></iframe>';
-  var nome = f.s ? f.t+": "+f.s : f.t;
-  var linhas = [];
-  if(f.r) linhas.push(esc(f.r));
-  var ee = [f.e, f.a||""].filter(Boolean).join(" · "); if(ee) linhas.push(esc(ee));
-  if(f.p) linhas.push("Postado em "+fmt(f.p));
-  return '<a class="card" href="#ler-'+f.id+'" target="_blank" rel="noopener" aria-label="Ler '+esc(nome)+'" style="animation-delay:'+Math.min(i,12)*14+'ms">'+
-    '<div class="cover m'+f.m+'" style="background:'+f.c+';color:'+f.f+'">'+img+
-      (f.e?'<span class="ed">'+esc(f.e)+'</span>':'<span></span>')+
-      '<div><h2 class="ct">'+esc(f.t)+'</h2>'+(f.s?'<p class="cs">'+esc(f.s)+'</p>':'')+'</div>'+
-    '</div>'+
-    '<p class="meta"><b>'+esc(nome)+'</b><span>'+linhas.join("<br>")+'</span></p>'+
-  '</a>';
-}
-function lista(a,b){
-  var h="";
-  for(var i=a;i<b;i++){
-    h+=cartao(atual[i],i-a);
-    if((i+1)%8===0 && i+1<atual.length) h+=anuncio("grade");
-  }
-  return h;
-}
-function statusFim(){
-  var n = atual.length;
-  $("fimtxt").textContent = n ? "Mostrando "+vis+" de "+n : "";
-  $("mais").hidden = vis>=n;
-}
-function renderiza(){
-  atual = ITENS.filter(function(f){return passa(f)});
-  atual.sort(function(a,b){
-    if(st.sort==="post") return b.p.localeCompare(a.p) || a.t.localeCompare(b.t,"pt-BR");
-    if(st.sort==="novo") return b.a-a.a || a.t.localeCompare(b.t,"pt-BR");
-    if(st.sort==="antigo") return a.a-b.a || a.t.localeCompare(b.t,"pt-BR");
-    return a.t.localeCompare(b.t,"pt-BR") || a.s.localeCompare(b.s,"pt-BR");
-  });
-  var n = atual.length;
-  $("count").textContent = n+(n===1?" quadrinho":" quadrinhos");
-  $("desc").textContent = descricao();
-  $("fab").textContent = "Filtros"+(ativos()?" ("+ativos()+")":"");
-  vis = Math.min(LOTE,n);
-  var g = $("grid");
-  if(!n){
-    g.innerHTML = '<div class="empty">Nenhum quadrinho combina com esses filtros.<br><button type="button" id="limpa2">Limpar filtros</button></div>';
-    $("limpa2").onclick = limpa;
-  } else {
-    g.innerHTML = lista(0,vis);
-  }
-  statusFim();
-  atualizaMenu();
-  ativaAds();
-  if(obs){obs.unobserve($("fim"));obs.observe($("fim"));}
-}
-function carrega(){
-  if(vis>=atual.length) return;
-  var ini = vis; vis = Math.min(vis+LOTE,atual.length);
-  $("grid").insertAdjacentHTML("beforeend", lista(ini,vis));
-  statusFim(); ativaAds();
-  if(obs){obs.unobserve($("fim"));obs.observe($("fim"));}
-}
-
-function limpa(){
-  GRUPOS.forEach(function(g){st.sel[g.k]=[]});
-  st.q=""; $("q").value="";
-  renderiza();
-}
-
-$("menu").addEventListener("click", function(e){
-  var b = e.target.closest("[data-k][data-v]"); if(!b) return;
-  var arr = st.sel[b.dataset.k], i = arr.indexOf(b.dataset.v);
-  if(i>=0) arr.splice(i,1); else arr.push(b.dataset.v);
-  renderiza();
-});
-$("q").addEventListener("input", function(e){st.q=e.target.value.trim();renderiza();});
-$("sort").addEventListener("change", function(e){st.sort=e.target.value;renderiza();});
-$("reset").addEventListener("click", limpa);
-
-
-
-// Leitor de PDF (iframe)
-function slug(f){return norm(f.t+" "+f.s+" "+f.a).replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");}
-function atribuiIds(){var vistos={};ITENS.forEach(function(f){var b=slug(f)||"item",n=vistos[b]=(vistos[b]||0)+1;f.id=n>1?b+"-"+n:b;});}
-var cur=null, savedY=0;
-function msg(t){$("lmsg").textContent=t||"";}
-function embed(u){
-  var m=u.match(/drive\.google\.com\/file\/d\/([^\/?#]+)/)||u.match(/drive\.google\.com\/open\?id=([^&#]+)/);
-  return m?"https://drive.google.com/file/d/"+m[1]+"/preview":u;
-}
-function ehImagem(u){return /\.(png|jpe?g|webp|gif|avif|svg)($|[?#])/i.test(u);}
-function capaEmbed(u){u=embed(u);return (/\.pdf($|[?#])/i.test(u)&&u.indexOf("#")<0)?u+"#page=1&view=FitH&toolbar=0&navpanes=0&scrollbar=0":u;}
-function dentro(v){document.querySelectorAll("main,.menu,.brandbar,.fab").forEach(function(e){e.inert=v;});}
-function carregaPdf(f){
-  var fr=$("lframe"); $("lopen").hidden=true;
-  if(!f.pdf){ fr.hidden=true; fr.src="about:blank"; msg("Este título ainda não tem PDF."); return; }
-  var u=embed(f.pdf); msg("");
-  $("lopen").href=f.pdf; $("lopen").hidden=false;
-  fr.src=(/\.pdf($|[?#])/i.test(u)&&u.indexOf("#")<0)?u+"#view=FitH":u;
-  fr.hidden=false;
-}
-function abreLeitor(f){
-  if($("leitor").hidden) savedY=window.scrollY;
-  cur=f; $("leitor").hidden=false; document.body.style.overflow="hidden"; dentro(true);
-  $("ltit").textContent=(f.s?f.t+": "+f.s:f.t); $("lsub").textContent=[f.r,f.e,f.a||""].filter(Boolean).join(" · ");
-  $("lback").focus(); carregaPdf(f); ativaAds();
-}
-function fechaLeitor(){
-  if($("leitor").hidden) return;
-  $("leitor").hidden=true; document.body.style.overflow=""; dentro(false); cur=null;
-  $("lframe").src="about:blank"; $("lframe").hidden=true; msg("");
-  window.scrollTo(0,savedY);
-}
-$("lback").addEventListener("click",function(){location.hash="";});
-function rota(){
-  var h=location.hash.slice(1), f=null;
-  if(h.indexOf("ler-")===0) f=ITENS.filter(function(x){return "ler-"+x.id===h;})[0]||null;
-  if(f){ if(cur!==f) abreLeitor(f); } else fechaLeitor();
-}
-window.addEventListener("hashchange",rota);
-document.addEventListener("keydown",function(e){ if(e.key==="Escape" && !$("leitor").hidden) location.hash=""; });
-
-// Gaveta no celular
-function abre(v){
-  $("menu").classList.toggle("open", v);
-  $("scrim").classList.toggle("show", v);
-  $("fab").setAttribute("aria-expanded", String(v));
-  if(v) $("q").focus({preventScroll:true}); else $("fab").focus({preventScroll:true});
-}
-$("fab").addEventListener("click", function(){abre(!$("menu").classList.contains("open"));});
-$("scrim").addEventListener("click", function(){abre(false);});
-document.addEventListener("keydown", function(e){if(e.key==="Escape" && $("menu").classList.contains("open")) abre(false);});
-
-$("mais").addEventListener("click", carrega);
-if("IntersectionObserver" in window){
-  obs = new IntersectionObserver(function(es){ if(es[0].isIntersecting) carrega(); },{rootMargin:"200px 0px"});
-  obs.observe($("fim"));
-}
-// Leitura do catalogo.csv
-function hash(s){var h=0;for(var i=0;i<s.length;i++)h=(h*31+s.charCodeAt(i))>>>0;return h;}
-function csv(txt){
-  if(txt.charCodeAt(0)===0xFEFF) txt=txt.slice(1);
-  var l1=txt.split(/\r?\n/)[0], sep=(l1.indexOf(";")>=0&&l1.indexOf(",")<0)?";":",";
-  var rows=[],row=[],cell="",q=false;
-  for(var i=0;i<txt.length;i++){
-    var c=txt[i];
-    if(q){ if(c==='"'){ if(txt[i+1]==='"'){cell+='"';i++;} else q=false; } else cell+=c; }
-    else if(c==='"') q=true;
-    else if(c===sep){row.push(cell);cell="";}
-    else if(c==="\n"||c==="\r"){ if(c==="\r"&&txt[i+1]==="\n") i++; row.push(cell);cell="";rows.push(row);row=[]; }
-    else cell+=c;
-  }
-  if(cell!==""||row.length){row.push(cell);rows.push(row);}
+  row.push(cur);
+  if(row.some(v=>v.trim()!==""))rows.push(row);
   return rows;
 }
-var COR=/^#[0-9a-fA-F]{3,8}$/;
-function carregaItens(txt){
-  var rows=csv(txt); if(!rows.length) return [];
-  var h=rows[0].map(function(x){return norm(x).trim().replace(/\s+/g,"_");}), out=[];
-  rows.slice(1).forEach(function(r){
-    var o={}; h.forEach(function(k,i){o[k]=(r[i]||"").trim();});
-    if(!o.titulo) return;
-    var m=parseInt(o.motivo,10); if(!(m>=0&&m<=3)) m=hash(o.titulo+(o.subtitulo||""))%4;
-    out.push({t:o.titulo,s:o.subtitulo||"",r:o.arco||"",e:o.editora||"",a:parseInt(o.ano,10)||0,
-      p:/^\d{4}-\d{2}-\d{2}/.test(o.data_postagem||"")?o.data_postagem.slice(0,10):"",
-      pdf:o.pdf||"",capa:o.capa||"",c:COR.test(o.cor_fundo||"")?o.cor_fundo:"#3B4A5C",f:COR.test(o.cor_texto||"")?o.cor_texto:"#F1F5F9",m:m});
+function hue(s){let h=0;for(const c of s)h=(h*31+c.charCodeAt(0))>>>0;return h%360}
+function safeUrl(u){u=(u||"").trim();return /^(https?:\/\/|[^:\s]+$)/i.test(u)?u:""}
+function toFilms(text){
+  const rows=parseCSV(text);
+  if(rows.length<2)throw new Error("O CSV está vazio.");
+  const head=rows[0].map(h=>h.trim().toLowerCase());
+  if(!head.includes("titulo"))throw new Error("O CSV precisa ter a coluna “titulo”.");
+  return rows.slice(1).map(r=>{
+    const o={};head.forEach((h,i)=>o[h]=(r[i]||"").trim());
+    const h=hue(o.titulo);
+    return{
+      title:o.titulo,year:parseInt(o.ano,10)||0,country:o.pais||"—",
+      code:(o.sigla||o.pais||"").slice(0,3).toUpperCase(),
+      genres:(o.categorias||"").split(";").map(s=>s.trim()).filter(Boolean),
+      pub:o.data_publicacao||"",cover:safeUrl(o.capa_url),pdf:safeUrl(o.pdf_url),
+      c1:`hsl(${h} 60% 42%)`,c2:`hsl(${h} 65% 14%)`
+    };
   });
-  return out;
 }
-function erro(t){$("count").textContent="Não foi possível carregar o catálogo";$("desc").textContent=t;$("grid").innerHTML="";}
-montaAds(); ativaAds();
-$("count").textContent="Carregando…";
-fetch(CSV_URL,{cache:"no-cache"}).then(function(r){ if(!r.ok) throw new Error("http "+r.status); return r.text(); })
-.then(function(txt){
-  ITENS=carregaItens(txt);
-  if(!ITENS.length){erro("A tabela catalogo.csv está vazia ou não tem a coluna “titulo”.");return;}
-  atribuiIds(); montaGrupos(); renderiza(); rota();
-}).catch(function(){
-  erro("Não consegui ler o catalogo.csv. Confira se ele está na mesma pasta do index.html e abra a página pelo endereço do GitHub Pages; abrir o arquivo direto no computador não funciona.");
+
+/* ---------- Interface ---------- */
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
+const fmt=d=>d?new Date(d+"T12:00:00").toLocaleDateString("pt-BR"):"—";
+
+function buildFilters(){
+  const g=$("genres");g.innerHTML="<legend>Categoria</legend>";
+  const gens=[...new Set(films.flatMap(f=>f.genres))].sort((a,b)=>a.localeCompare(b,"pt-BR"));
+  gens.forEach(name=>{
+    const n=films.filter(f=>f.genres.includes(name)).length;
+    const l=document.createElement("label");l.className="chk";
+    l.innerHTML=`<input type="checkbox" value="${esc(name)}"><span>${esc(name)}</span><span class="n">${n}</span>`;
+    l.querySelector("input").addEventListener("change",e=>{e.target.checked?state.genres.add(name):state.genres.delete(name);render()});
+    g.appendChild(l);
+  });
+  const opt=(sel,items,all)=>{sel.innerHTML=`<option value="">${all}</option>`+items.map(([v,t])=>`<option value="${esc(v)}">${esc(t)}</option>`).join("")};
+  opt($("country"),[...new Set(films.map(f=>f.country))].sort((a,b)=>a.localeCompare(b,"pt-BR")).map(c=>[c,c]),"Todos");
+  opt($("decade"),[...new Set(films.filter(f=>f.year).map(f=>Math.floor(f.year/10)*10))].sort((a,b)=>b-a).map(d=>[d,`Anos ${d}`]),"Todas");
+}
+function reset(){
+  state.genres.clear();state.decade="";state.country="";state.q="";state.sort="pub";
+  document.querySelectorAll("#genres input").forEach(i=>i.checked=false);
+  $("decade").value="";$("country").value="";$("q").value="";$("sort").value="pub";
+  render();
+}
+function render(){
+  let list=films.map((f,i)=>({...f,i})).filter(f=>
+    (!state.genres.size||[...state.genres].every(g=>f.genres.includes(g)))&&
+    (!state.decade||Math.floor(f.year/10)*10==state.decade)&&
+    (!state.country||f.country===state.country)&&
+    (!state.q||f.title.toLowerCase().includes(state.q))
+  );
+  const s=state.sort;
+  list.sort((a,b)=>s==="pub"?b.pub.localeCompare(a.pub):s==="year-desc"?b.year-a.year:s==="year-asc"?a.year-b.year:a.title.localeCompare(b.title,"pt-BR"));
+  $("count").textContent=list.length===1?"1 revista":`${list.length} revistas`;
+
+  const chips=$("chips");chips.innerHTML="";
+  const add=(label,fn)=>{const b=document.createElement("button");b.className="chip";b.textContent=label+" ×";b.setAttribute("aria-label","Remover filtro "+label);b.onclick=fn;chips.appendChild(b)};
+  state.genres.forEach(g=>add(g,()=>{state.genres.delete(g);document.querySelectorAll("#genres input").forEach(i=>{if(i.value===g)i.checked=false});render()}));
+  if(state.decade)add(`Anos ${state.decade}`,()=>{state.decade="";$("decade").value="";render()});
+  if(state.country)add(state.country,()=>{state.country="";$("country").value="";render()});
+
+  $("grid").innerHTML=list.length?list.map(f=>`
+    <button class="card" data-i="${f.i}" aria-label="Ler ${esc(f.title)}">
+      <div class="poster${f.cover?" hascover":""}" style="--c1:${f.c1};--c2:${f.c2}">
+        ${f.cover?`<iframe src="${esc(f.cover)}" title="" tabindex="-1" scrolling="no" loading="lazy"></iframe>`:""}
+        <span class="score">${esc(f.code)}</span>
+        <div class="t"><b>${esc(f.title)}</b><span>desde ${f.year||"—"}</span></div>
+      </div>
+      <div class="info">
+        <h3>${esc(f.title)}</h3>
+        <p>${esc(f.genres.join(", "))}</p>
+        <p>${esc(f.country)} · desde ${f.year||"—"}</p>
+        <p>Publicação: ${fmt(f.pub)}</p>
+      </div>
+    </button>`).join(""):
+    `<div class="empty"><strong>Nenhuma revista encontrada.</strong><p>Remova um filtro para ver mais revistas.</p><button class="primary" onclick="reset()">Limpar filtros</button></div>`;
+}
+
+/* ---------- Leitor de PDF ---------- */
+let lastCard=null;
+function openReader(f,card){
+  lastCard=card;
+  $("rTitle").textContent=f.title;
+  $("rMeta").textContent=`${f.country} · desde ${f.year||"—"} · publicação ${fmt(f.pub)}`;
+  const o=$("rOpen");
+  if(f.pdf){o.href=f.pdf;o.hidden=false;$("rFrame").hidden=false;$("rFrame").src=f.pdf;$("rNote").textContent="Se o PDF não aparecer aqui, use “Abrir em nova aba”: alguns sites não permitem exibição dentro de outra página."}
+  else{o.hidden=true;$("rFrame").hidden=true;$("rFrame").src="about:blank";$("rNote").textContent="Esta revista ainda não tem um link de PDF no CSV (coluna pdf_url)."}
+  $("reader").hidden=false;document.body.style.overflow="hidden";
+  $("rClose").focus();
+}
+function closeReader(){
+  $("reader").hidden=true;$("rFrame").src="about:blank";document.body.style.overflow="";
+  if(lastCard)lastCard.focus();
+}
+$("rClose").addEventListener("click",closeReader);
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!$("reader").hidden)closeReader()});
+$("grid").addEventListener("click",e=>{
+  const c=e.target.closest(".card");if(c)openReader(films[+c.dataset.i],c);
 });
+
+/* ---------- Eventos e carga ---------- */
+$("q").addEventListener("input",e=>{state.q=e.target.value.trim().toLowerCase();render()});
+$("decade").addEventListener("change",e=>{state.decade=e.target.value;render()});
+$("country").addEventListener("change",e=>{state.country=e.target.value;render()});
+$("sort").addEventListener("change",e=>{state.sort=e.target.value;render()});
+$("clear").addEventListener("click",reset);
+$("toggle").addEventListener("click",()=>{
+  const open=$("filters").classList.toggle("open");
+  $("toggle").setAttribute("aria-expanded",open);
+  $("toggle").textContent=open?"Ocultar filtros":"Mostrar filtros";
+});
+$("csvfile").addEventListener("change",e=>{
+  const file=e.target.files[0];if(!file)return;
+  const r=new FileReader();
+  r.onload=()=>{
+    try{films=toFilms(String(r.result));buildFilters();reset();$("msg").textContent=`${films.length} revistas carregadas de ${file.name}.`}
+    catch(err){$("msg").textContent="Não foi possível ler o CSV: "+err.message}
+  };
+  r.onerror=()=>{$("msg").textContent="Não foi possível abrir o arquivo."};
+  r.readAsText(file,"utf-8");
+  e.target.value="";
+});
+
+function iniciar(texto,aviso){
+  films=toFilms(texto);buildFilters();render();
+  if(aviso)$("msg").textContent=aviso;
+}
+fetch("revistas.csv",{cache:"no-cache"})
+  .then(r=>{if(!r.ok)throw new Error("revistas.csv não encontrado");return r.text()})
+  .then(t=>iniciar(t,""))
+  .catch(()=>{
+    try{
+      iniciar($("csv-reserva").textContent,"Não foi possível ler revistas.csv; exibindo a cópia de reserva embutida. Publique no GitHub Pages ou use um servidor local para ler o arquivo.");
+    }catch(err){
+      buildFilters();render();
+      $("grid").innerHTML='<div class="empty"><strong>Catálogo indisponível.</strong><p>'+esc(err.message)+'</p></div>';
+    }
+  });
 </script>
 </body>
 </html>
